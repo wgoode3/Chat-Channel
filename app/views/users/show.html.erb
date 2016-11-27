@@ -33,7 +33,7 @@
 
 <p>Username: <%= @user.username %></p>
 <p>Email: <%= @user.email %></p>
-<p><%= image_tag @user.avatar.url(:thumb) %></p>
+<p><%= image_tag @user.avatar.url(:medium) %></p>
 <hr>
 
 <h2>Your Channel!</h2>
@@ -43,7 +43,6 @@
 		<div class="text">
 			<h3><a href="/channels/<%=@channel[0].id%>"><%= @channel[0].name %></a></h3>
 			<p><%= @channel[0].description %></p>
-			<p><%= @channel[0].secret %></p>
 			<p><%= @channel[0].user.username %></p>
 		</div>
 	</div>

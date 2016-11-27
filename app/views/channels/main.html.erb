@@ -37,9 +37,8 @@
 			<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
 			<div class="text">
 				<h3><a href="/channels/<%=channel.id%>"><%= channel.name %></a></h3>
-				<p><%= channel.description %></p>
-				<p><%= channel.secret %></p>
-				<p><%= channel.user.username %></p>
+				<p>Channel description: <br><%= channel.description %></p>
+				<p>Channel creator: <br><%= channel.user.username %></p>
 			</div>
 		</div>
 	<% end %>

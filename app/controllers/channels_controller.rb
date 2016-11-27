@@ -29,7 +29,7 @@ class ChannelsController < ApplicationController
   end 
 
   def edit
-  	@channel = Channel.find(params[:id])
+  	@channel = Channel.where(user_id: session[:user_id])[0]
   end
 
   def secret

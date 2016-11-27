@@ -27,13 +27,15 @@
 <div id="stream">Loading the player ...</div>
 <div id="chat">
 	<div id="comments">
-		<h3><%= @channel.name %> Chat:</h3>
+		<h3 style="text-align: center;"><%= @channel.name %> Chat:</h3>
 		<ul>
 			<% @comments.each do |comment| %>
-				<li> <%= image_tag comment.user.avatar.url(:thumb) %> 
-				<%= comment.user.username %> 
-				<%= comment.created_at.strftime("(%H:%M %b %d,%Y)") %></li>
-				<li> <%= comment.body %> </li>
+				<div class ="comment">
+					<div class="image"><%= image_tag comment.user.avatar.url(:thumb) %></div> 
+					<div class="text"><li><a href="/users/<%=comment.user.id%>"><%= comment.user.username %></a> 
+					<span style="color: silver;"><%= comment.created_at.strftime("%H:%M %m/%d/%Y") %></span></li>
+					<li> <%= comment.body %> </li></div>
+				</div>
 			<% end %>
 		</ul>
 	</div>
@@ -42,7 +44,7 @@
 			<%= form_for :comment, url: "#{@channel.id}/comment" do |f| %>
 				<%= f.hidden_field :channel_id, :value => @channel.id %>
 				<%= f.text_area :body, :cols => 40, :rows => 4, :placeholder => 'your comment...' %>
-				<%= f.submit "Send" %>
+				<%= f.submit "Post", :class => "post" %>
 			<% end %>
 			<% else %>
 				<strong><p style="color:black;">You must login to leave a comment</p></strong>
@@ -96,7 +98,6 @@
 	}); 
 </script>
 
-<hr>
 <div class="channel">
 	<%= image_tag(@channel.logo.url(:thumb), :class => "image") %>
 	<div class="text">

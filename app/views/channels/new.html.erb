@@ -38,7 +38,7 @@
   	Channel name: <%= f.text_field :name %><br>
   	Descripion: <%= f.text_field :description %><br>
   	Logo: <%= f.file_field :logo %><br>
-  	<%= f.submit "New Channel" %>
+  	<%= f.submit "New Channel", :class => "button" %>
 <% end %>
 
 <% if flash[:errors] %>

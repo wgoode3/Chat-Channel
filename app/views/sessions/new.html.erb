@@ -14,7 +14,7 @@
   		Password: <%= f.text_field :password %><br>
   		Confirm Password: <%= f.text_field :password_confirmation %><br>
   		Avatar: <%= f.file_field :avatar %><br>
-  	<%= f.submit "Register" %>
+  	<%= f.submit "Register", :class => "button" %>
 	<% end %>
 	</div>
 
@@ -24,7 +24,7 @@
 	<%= form_for :user, url: '/login' do |f| %>
   		Email: <%= f.text_field :email %><br>
   		Password: <%= f.text_field :password %><br>
-  	<%= f.submit "Login" %>
+  	<%= f.submit "Login", :class => "button" %>
 	<% end %>
 	</div>
 

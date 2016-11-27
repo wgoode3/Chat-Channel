@@ -24,21 +24,23 @@
 	</p>
 </div>
 <h2>Editting <%= @user.username %></h2>
-<p> <%= image_tag @user.avatar.url(:thumb) %> </p>
+<p> <%= image_tag @user.avatar.url(:medium) %> </p>
 <p> <%= @user.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
 <p> <%= @user.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
 
 <% if session[:user_id] == @user.id %>	
+	<div class="block">
 	<%= form_for :user, url: 'patch' do |f| %>
   		Username: <%= f.text_field :username, :value => @user.username %><br>
   		Email: <%= f.text_field :email, :email => @user.email %><br>
   		Avatar: <%= f.file_field :avatar %><br>
-  		<%= f.submit "Update" %>
+  		<%= f.submit "Update", :class => "button" %>
 	<% end %>
 
 	<%= form_for :user, url: 'delete' do |f| %>
-		<%= f.submit "Delete" %>
+		<%= f.submit "Delete", :class => "button" %>
 	<% end %>
+	</div>
 <% end %>
 
 </body>

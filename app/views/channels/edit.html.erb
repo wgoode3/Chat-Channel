@@ -29,6 +29,8 @@
 		<% end %>
 	</p>
 </div>
+<br><br>
+<div class="block" style="text-align: left; color: white;">
 <h2>Editting <%= @channel.name %></h2>
 <p> <%= image_tag @channel.logo.url(:thumb) %> </p>
 <p> <%= @channel.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
@@ -37,23 +39,26 @@
 
 <% if session[:user_id] == @channel.user_id %>
 	<%= form_for :channel, url: 'secret' do |f| %>
-		<%= f.submit "New Secret Key" %>
+		<%= f.submit "New Key", :class => "button" %>
 	<% end %>
 <% end %>
+</div>
 
 <br><br>
 
 <% if session[:user_id] == @channel.user_id %>	
+	<div class="block">
 	<%= form_for :channel, url: 'patch' do |f| %>
   		Name: <%= f.text_field :name, :value => @channel.name %><br>
-  		Description: <%= f.text_field :description, :description => @channel.description %><br>
+  		Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :value => @channel.description %><br>
   		Logo: <%= f.file_field :logo %><br>
-  		<%= f.submit "Update" %>
+  		<%= f.submit "Update", :class => "button" %>
 	<% end %>
 
 	<%= form_for :channel, url: 'delete' do |f| %>
-		<%= f.submit "Delete" %>
+		<%= f.submit "Delete", :class => "button" %>
 	<% end %>
+	</div>
 <% end %>
 
 </body>
