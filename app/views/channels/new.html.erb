@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Make a new Channel</title>
+</head>
+<body>
+
+<div id="menubar">
+	<p>
+		<a href="/channels/main">Home</a>
+		<% if session[:user_id] %>
+			<a href="/users/<%=session[:user_id]%>">Profile</a>
+		<% else %>
+			<a href="/users/new">Profile</a>
+		<% end %>
+		<a href="#">FAQ</a>
+		<a href="#">Blog</a>		
+		<% if session[:user_id] %>
+			<a class="logout" href="/logout">Logout</a>
+		<% else %>
+			<a class="logout" href="/sessions/new">Login</a>
+		<% end %>
+		<a href="#">Edit User</a>
+		<a href="#">Edit Channel</a>	
+	</p>
+</div>
+
+<h2>Showing User!</h2>
+
+<p>Username: <%= @user.username %></p>
+<p>Email: <%= @user.email %></p>
+<p><%= image_tag @user.avatar.url(:thumb) %></p>
+<hr>
+
+<h2>Channels Information!</h2>
+
+<%= form_for :channel, url: 'create' do |f| %>
+  	Channel name: <%= f.text_field :name %><br>
+  	Descripion: <%= f.text_field :description %><br>
+  	Logo: <%= f.file_field :logo %><br>
+  	<%= f.submit "New Channel" %>
+<% end %>
+
+<% if flash[:errors] %>
+	<div class="error">
+		<% flash[:errors].each do |error| %>
+			<h3><%= error %></h3>
+		<% end %>
+	</div>
+<% end %>
+
+</body>
+</html>

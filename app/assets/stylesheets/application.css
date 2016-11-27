@@ -1,0 +1,104 @@
+* { 
+	font-family: arial, sans-serif;
+}
+body {
+	background-color: #222
+}
+h1, h2, h3, h4, p {
+	color: #c3c3c3;
+}
+#wrapper {
+	width: 100%;
+	height: 100%;
+}
+#menubar {
+	height: 50px;
+	width: 100%;
+	display: inline-block;
+	background-color: #535353;
+}
+#menubar a {
+	text-decoration: none;
+	color: #c3c3c3;
+	font-weight: bold;
+	margin-left: 20px;
+}
+.logout {
+	float: right;
+	margin-right: 20px;
+}
+.channel {
+	width: 100%;
+	height: 200px;
+	background-color: grey;
+	display: inline-block;
+	color: #fff;
+}
+.image {
+	display: inline-block;
+}
+.text {
+	vertical-align: top;
+	display: inline-block;
+	padding: 10px;
+}
+.text a {
+	text-decoration: none;
+	color: #fff;
+}
+#menubar a:hover {
+	color: #FF530D;
+}
+.error{
+	padding: 5px;
+	text-align: center;
+	width: 35%;
+	color: white;
+	background-color: red;
+	margin-bottom: 20px;
+}
+.hide {
+	display: none;
+}
+span {
+	cursor: pointer;
+}
+.block{
+	width: 30%;
+	display: inline-block;
+	border: 1px solid #666;
+	vertical-align: top;
+	padding: 20px;
+}
+#stream {
+	display: inline-block;
+	vertical-align: top;
+}
+#chat {
+	width: 420px;
+	height: 720px;
+	background-color: silver;
+	display: inline-block;
+	position: relative;
+}
+#comments {
+	width: 420px;
+	height: 650px;
+	display: inline-block;
+	overflow: auto;
+	background-color: pink;
+	position: absolute;
+	top: 0;
+}
+#comments ul {
+	list-style-type: none;
+}
+#new_message {
+	width: 420px;
+	height: 70px;
+	background-color: #fff;
+	float: bottom;
+	position: absolute;
+	bottom: 0;
+	display: inline-block;
+}

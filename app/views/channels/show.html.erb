@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Channel</title>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>  
+</head>
+<body>
+<div id="menubar">
+	<p>
+		<a href="/channels/main">Home</a>
+		<% if session[:user_id] %>
+			<a href="/users/<%=session[:user_id]%>">Profile</a>
+		<% else %>
+			<a href="/sessions/new">Profile</a>
+		<% end %>
+		<a href="#">FAQ</a>
+		<a href="#">Blog</a>		
+		<% if session[:user_id] %>
+			<a class="logout" href="/logout">Logout</a>
+		<% else %>
+			<a class="logout" href="/sessions/new">Login</a>
+		<% end %>
+	</p>
+</div>
+
+<div id="stream">Loading the player ...</div>
+<div id="chat">
+	<div id="comments">
+		<h3><%= @channel.name %> Chat:</h3>
+		<ul>
+			<% @comments.each do |comment| %>
+				<li> <%= image_tag comment.user.avatar.url(:thumb) %> 
+				<%= comment.user.username %> 
+				<%= comment.created_at.strftime("(%H:%M %b %d,%Y)") %></li>
+				<li> <%= comment.body %> </li>
+			<% end %>
+		</ul>
+	</div>
+	<div id="new_message">
+		<% if session[:user_id] %>	
+			<%= form_for :comment, url: "#{@channel.id}/comment" do |f| %>
+				<%= f.hidden_field :channel_id, :value => @channel.id %>
+				<%= f.text_area :body, :cols => 40, :rows => 4, :placeholder => 'your comment...' %>
+				<%= f.submit "Send" %>
+			<% end %>
+			<% else %>
+				<strong><p style="color:black;">You must login to leave a comment</p></strong>
+				<a href="/sessions/new">Login</a>
+		<% end %>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	var objDiv = document.getElementById("comments");
+		objDiv.scrollTop = objDiv.scrollHeight;
+
+    // make video size based on screen size
+    // also adjust chat height while we're at it
+
+	var fq = window.matchMedia( "(min-width: 2400px)" );
+	var mq = window.matchMedia( "(min-width: 1720px)" );
+	var lq = window.matchMedia( "(min-width: 1400px)" );
+	
+	if (fq.matches) {
+  		var w = 1080;
+  		$('#chat').css("height","1080px");
+  		$('#comments').css("height","1010px");
+	} else if (mq.matches) {
+  		var w = 1280;
+  		$('#chat').css("height","720px");
+  		$('#comments').css("height","650px");
+	} else if (lq.matches) {
+		var w = 960;
+		$('#chat').css("height","540px");
+		$('#comments').css("height","470px");
+	} else {
+		var w = 640;
+		$('#chat').css("height","360px");
+		$('#comments').css("height","290px");
+	}
+
+	// the jwplayer player
+
+	var playerInstance = jwplayer("stream");
+
+	playerInstance.setup({
+    	file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
+    	width: w,
+    	height: w*9/16,
+    	primary: "flash",
+    	autostart: true,
+    	controls: true,
+    	stretching: "exactfit",
+	}); 
+</script>
+
+<hr>
+<div class="channel">
+	<%= image_tag(@channel.logo.url(:thumb), :class => "image") %>
+	<div class="text">
+		<h3><%= @channel.name %></h3>
+		<p><%= @channel.description %></p>
+		<p><%= @channel.user.username %></p>
+	</div>
+</div>
+
+</body>
+</html>

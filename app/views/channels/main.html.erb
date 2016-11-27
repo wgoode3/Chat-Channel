@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chat Channel</title>
+</head>
+<body>
+<div id="wrapper">
+<h1>Chat Channel</h1>
+
+<div id="menubar">
+	<p>
+		<a href="/channels/main">Home</a>
+		<% if session[:user_id] %>
+			<a href="/users/<%=session[:user_id]%>">Profile</a>
+		<% else %>
+			<a href="/sessions/new">Profile</a>
+		<% end %>
+		<a href="#">FAQ</a>
+		<a href="#">Blog</a>		
+		<% if session[:user_id] %>
+			<a class="logout" href="/logout">Logout</a>
+		<% else %>
+			<a class="logout" href="/sessions/new">Login</a>
+		<% end %>
+	</p>
+</div>
+
+<% if session[:user_id] %>
+	<h3>Hello <%= @user.username %> </h3>
+<% end %>
+
+<h2>Currently Streaming:</h2>
+
+<% if @channels %>
+	<% @channels.each do |channel| %>
+		<div class="channel">
+			<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
+			<div class="text">
+				<h3><a href="/channels/<%=channel.id%>"><%= channel.name %></a></h3>
+				<p><%= channel.description %></p>
+				<p><%= channel.secret %></p>
+				<p><%= channel.user.username %></p>
+			</div>
+		</div>
+	<% end %>
+<% end %>
+</div>
+</body>
+</html>

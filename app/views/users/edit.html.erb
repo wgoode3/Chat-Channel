@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit User</title>
+</head>
+<body>
+
+<div id="menubar">
+	<p>
+		<a href="/channels/main">Home</a>
+		<% if session[:user_id] %>
+			<a href="/users/<%=session[:user_id]%>">Profile</a>
+		<% else %>
+			<a href="/users/new">Profile</a>
+		<% end %>
+		<a href="#">FAQ</a>
+		<a href="#">Blog</a>
+		<a href="/users/<%=session[:user_id]%>/edit">Edit User</a>		
+		<% if session[:user_id] %>
+			<a class="logout" href="/logout">Logout</a>
+		<% else %>
+			<a class="logout" href="/sessions/new">Login</a>
+		<% end %>
+	</p>
+</div>
+<h2>Editting <%= @user.username %></h2>
+<p> <%= image_tag @user.avatar.url(:thumb) %> </p>
+<p> <%= @user.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
+<p> <%= @user.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
+
+<% if session[:user_id] == @user.id %>	
+	<%= form_for :user, url: 'patch' do |f| %>
+  		Username: <%= f.text_field :username, :value => @user.username %><br>
+  		Email: <%= f.text_field :email, :email => @user.email %><br>
+  		Avatar: <%= f.file_field :avatar %><br>
+  		<%= f.submit "Update" %>
+	<% end %>
+
+	<%= form_for :user, url: 'delete' do |f| %>
+		<%= f.submit "Delete" %>
+	<% end %>
+<% end %>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Register a User</title>
+</head>
+<body>
+	
+	<div class="block">
+	<h2>User Registration!</h2>
+
+	<%= form_for :user, url: '/create' do |f| %>
+  		Username: <%= f.text_field :username %><br>
+  		Email: <%= f.text_field :email %><br>
+  		Password: <%= f.text_field :password %><br>
+  		Confirm Password: <%= f.text_field :password_confirmation %><br>
+  		Avatar: <%= f.file_field :avatar %><br>
+  	<%= f.submit "Register" %>
+	<% end %>
+	</div>
+
+	<div class="block">
+	<h2>User Login!</h2>
+
+	<%= form_for :user, url: '/login' do |f| %>
+  		Email: <%= f.text_field :email %><br>
+  		Password: <%= f.text_field :password %><br>
+  	<%= f.submit "Login" %>
+	<% end %>
+	</div>
+
+	<% if flash[:errors] %>
+		<div class="error">
+			<% flash[:errors].each do |error| %>
+				<h3><%= error %></h3>
+			<% end %>
+		</div>
+	<% end %>
+
+</body>
+</html>
