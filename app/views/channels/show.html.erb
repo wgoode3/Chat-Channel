@@ -43,12 +43,11 @@
 		<% if session[:user_id] %>	
 			<%= form_for :comment, url: "#{@channel.id}/comment" do |f| %>
 				<%= f.hidden_field :channel_id, :value => @channel.id %>
-				<%= f.text_area :body, :cols => 40, :rows => 4, :placeholder => 'your comment...' %>
+				<%= f.text_area :body, :placeholder => 'your comment...' %>
 				<%= f.submit "Post", :class => "post" %>
 			<% end %>
 			<% else %>
-				<strong><p style="color:black;">You must login to leave a comment</p></strong>
-				<a href="/sessions/new">Login</a>
+				<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
 		<% end %>
 	</div>
 </div>

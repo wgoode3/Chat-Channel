@@ -29,17 +29,19 @@
 
 <p>Username: <%= @user.username %></p>
 <p>Email: <%= @user.email %></p>
-<p><%= image_tag @user.avatar.url(:thumb) %></p>
+<p><%= image_tag @user.avatar.url(:medium) %></p>
 <hr>
 
 <h2>Channels Information!</h2>
 
+<div class="block">
 <%= form_for :channel, url: 'create' do |f| %>
-  	Channel name: <%= f.text_field :name %><br>
-  	Descripion: <%= f.text_field :description %><br>
+  	Channel name: <%= f.text_field :name, :placeholder => "Channel name" %><br>
+  	Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :placeholder => "Channel description..."  %><br>
   	Logo: <%= f.file_field :logo %><br>
   	<%= f.submit "New Channel", :class => "button" %>
 <% end %>
+</div>
 
 <% if flash[:errors] %>
 	<div class="error">
