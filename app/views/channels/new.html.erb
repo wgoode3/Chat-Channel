@@ -20,16 +20,15 @@
 		<% else %>
 			<a class="logout" href="/sessions/new">Login</a>
 		<% end %>
-		<a href="#">Edit User</a>
-		<a href="#">Edit Channel</a>	
+		<a href="/users/<%=session[:user_id]%>/edit">Edit User</a>
 	</p>
 </div>
 
 <h2>Showing User!</h2>
 
+<p><%= image_tag @user.avatar.url(:medium) %></p>
 <p>Username: <%= @user.username %></p>
 <p>Email: <%= @user.email %></p>
-<p><%= image_tag @user.avatar.url(:medium) %></p>
 <hr>
 
 <h2>Channels Information!</h2>

@@ -65,7 +65,7 @@
 	var lq = window.matchMedia( "(min-width: 1400px)" );
 	
 	if (fq.matches) {
-  		var w = 1080;
+  		var w = 1920;
   		$('#chat').css("height","1080px");
   		$('#comments').css("height","1010px");
 	} else if (mq.matches) {
@@ -87,7 +87,7 @@
 	var playerInstance = jwplayer("stream");
 
 	playerInstance.setup({
-    	file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
+    	file: "rtmp://192.168.1.29:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
     	width: w,
     	height: w*9/16,
     	primary: "flash",

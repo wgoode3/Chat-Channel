@@ -15,7 +15,12 @@
 		<% end %>
 		<a href="#">FAQ</a>
 		<a href="#">Blog</a>
-		<a href="/users/<%=session[:user_id]%>/edit">Edit User</a>		
+		<% @channel = Channel.where(user_id: session[:user_id]) %>
+		<% if @channel.exists? %>
+			<a href="/channels/<%=@channel[0].id%>/edit">Edit Channel</a>
+		<% else %>
+			<a href="/channels/new">New Channel</a>
+		<% end %>	
 		<% if session[:user_id] %>
 			<a class="logout" href="/logout">Logout</a>
 		<% else %>

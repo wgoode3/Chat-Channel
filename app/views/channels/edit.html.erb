@@ -21,7 +21,7 @@
 		<% end %>
 		<a href="#">FAQ</a>
 		<a href="#">Blog</a>
-		<a href="/channels/<%= @channel.id %>/edit">Edit Channel</a>		
+		<a href="/users/<%=session[:user_id]%>/edit">Edit User</a>		
 		<% if session[:user_id] %>
 			<a class="logout" href="/logout">Logout</a>
 		<% else %>
