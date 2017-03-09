@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Chat Channel</title>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>  
-</head>
-<body>
+<script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>  
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -28,7 +21,7 @@
 <div id="chat">
 	<div id="comments">
 		<h3 style="text-align: center;"><%= @channel.name %> Chat:</h3>
-		<ul>
+		<ul id='target'>
 			<% @comments.each do |comment| %>
 				<div class ="comment">
 					<div class="image"><%= image_tag comment.user.avatar.url(:thumb) %></div> 
@@ -43,19 +36,16 @@
 		<% if session[:user_id] %>	
 			<%= form_for :comment, url: "#{@channel.id}/comment" do |f| %>
 				<%= f.hidden_field :channel_id, :value => @channel.id %>
-				<%= f.text_area :body, :placeholder => 'your comment...' %>
+				<%= f.text_area :body, :placeholder => 'your comment...', :id => 'new_comment' %>
 				<%= f.submit "Post", :class => "post" %>
 			<% end %>
-			<% else %>
-				<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
+		<% else %>
+			<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
 		<% end %>
 	</div>
 </div>
 
 <script type="text/javascript">
-
-	var objDiv = document.getElementById("comments");
-		objDiv.scrollTop = objDiv.scrollHeight;
 
     // make video size based on screen size
     // also adjust chat height while we're at it
@@ -82,6 +72,11 @@
 		$('#comments').css("height","290px");
 	}
 
+	// scroll chat to the bottom
+
+	var objDiv = document.getElementById("comments");
+		objDiv.scrollTop = objDiv.scrollHeight;
+
 	// the jwplayer player
 
 	var playerInstance = jwplayer("stream");
@@ -97,6 +92,7 @@
 	}); 
 </script>
 
+
 <div class="channel">
 	<%= image_tag(@channel.logo.url(:thumb), :class => "image") %>
 	<div class="text">
@@ -106,5 +102,35 @@
 	</div>
 </div>
 
-</body>
-</html>
+<script type ="text/javascript" src="http://192.168.1.17:3001/socket.io/socket.io.js"></script>
+
+<script>
+	var channel = <%= @channel.id.to_json.html_safe %>;
+
+	$(document).ready(function(){
+		var socket = io.connect('http://192.168.1.17:3001');
+		socket.emit("new_user", "new_user");
+
+		$('#new_message').submit(function(){
+			var comment = $('#new_comment').serialize();
+			$.post(`/channels/${channel}/comment`, comment, function(data){
+				socket.emit("new_post", {channel: channel, comment: comment});
+				$('#new_comment').val('');
+				$('#target').append(data)
+				var objDiv = document.getElementById("comments");
+				objDiv.scrollTop = objDiv.scrollHeight;
+			})
+		return false;
+		})
+
+		socket.on('broadcast', function (data){
+			if(data.response.channel == channel){
+				$.get(`/channels/${channel}/comment`, function(data){
+					$('#comments').html(data)
+					var objDiv = document.getElementById("comments");
+					objDiv.scrollTop = objDiv.scrollHeight;
+				})
+			}
+        });	
+	});
+</script>

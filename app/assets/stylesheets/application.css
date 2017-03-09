@@ -2,7 +2,8 @@
 	font-family: arial, sans-serif;
 }
 body {
-	background-color: #222
+	background-color: #222;
+	margin: 20px;
 }
 h1, h2, h3, h4, p {
 	color: #fff;
@@ -119,11 +120,11 @@ span {
 	display: inline-block;
 }
 #new_message textarea {
-	width: 335px;
+	width: 330px;
 	height: 60px;
 	border-radius: 5px;
+	margin-left: 5px;
 }
-
 .button {
 	height: 35px;
 	width: 100px;
