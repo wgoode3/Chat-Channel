@@ -5,7 +5,6 @@
 </head>
 <body>
 <div id="wrapper">
-<h1>Chat Channel</h1>
 
 <div id="menubar">
 	<p>
@@ -24,6 +23,8 @@
 		<% end %>
 	</p>
 </div>
+
+<h1>Chat Channel</h1>
 
 <% if session[:user_id] %>
 	<h3>Hello <%= @user.username %> </h3>

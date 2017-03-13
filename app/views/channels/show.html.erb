@@ -34,11 +34,10 @@
 	</div>
 	<div id="new_message">
 		<% if session[:user_id] %>	
-			<%= form_for :comment, url: "#{@channel.id}/comment" do |f| %>
-				<%= f.hidden_field :channel_id, :value => @channel.id %>
-				<%= f.text_area :body, :placeholder => 'your comment...', :id => 'new_comment' %>
-				<%= f.submit "Post", :class => "post" %>
-			<% end %>
+			<form>
+				<textarea id='new_comment' placeholder='your comment...' name="body"></textarea>
+				<input type="submit" name="Post" value="Post" class="post">
+			</form>
 		<% else %>
 			<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
 		<% end %>
@@ -72,17 +71,12 @@
 		$('#comments').css("height","290px");
 	}
 
-	// scroll chat to the bottom
-
-	var objDiv = document.getElementById("comments");
-		objDiv.scrollTop = objDiv.scrollHeight;
-
 	// the jwplayer player
 
 	var playerInstance = jwplayer("stream");
 
 	playerInstance.setup({
-    	file: "rtmp://192.168.1.29:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
+    	file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
     	width: w,
     	height: w*9/16,
     	primary: "flash",
@@ -102,14 +96,16 @@
 	</div>
 </div>
 
-<script type ="text/javascript" src="http://192.168.1.17:3001/socket.io/socket.io.js"></script>
+<script type ="text/javascript" src="http://192.168.1.250:3001/socket.io/socket.io.js"></script>
 
 <script>
 	var channel = <%= @channel.id.to_json.html_safe %>;
+	var socket = io.connect('http://192.168.1.250:3001');
+
 
 	$(document).ready(function(){
-		var socket = io.connect('http://192.168.1.17:3001');
-		socket.emit("new_user", "new_user");
+		var socket = io.connect('http://192.168.1.250:3001');
+		// socket.emit("new_user", "new_user");
 
 		$('#new_message').submit(function(){
 			var comment = $('#new_comment').serialize();

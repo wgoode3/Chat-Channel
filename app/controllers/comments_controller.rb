@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   def create
-   	@comment = Comment.new(body: params[:comment][:body], user_id: session[:user_id], channel_id: params[:id])
+    @comment = Comment.new(body: params[:body], user_id: session[:user_id], channel_id: params[:id])
 	  if @comment.valid?
 	    @comment.save
 	  end
