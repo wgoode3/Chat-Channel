@@ -1,0 +1,10 @@
+<ul>
+	<li class ="comment">
+		<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
+		<div class="text">
+			<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a> 
+			<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
+			<br><%= @comment.body %>
+		</div>
+	</li>
+</ul>

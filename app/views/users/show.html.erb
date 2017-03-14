@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Showing user</title>
-</head>
-<body>
-
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
 		<% if session[:user_id] %>
-			<a href="/users/<%=session[:user_id]%>">Profile</a>
+			<a href="/users/<%= session[:user_id] %>">Profile</a>
 		<% else %>
 			<a href="/users/new">Profile</a>
 		<% end %>
@@ -18,9 +11,9 @@
 		<% if session[:user_id] %>
 			<a class="logout" href="/logout">Logout</a>
 		<% else %>
-			<a class="logout" href="/sessions/new>Login</a>
+			<a class="logout" href="/sessions/new>Login"</a>
 		<% end %>
-		<a href="/users/<%=session[:user_id]%>/edit">Edit User</a>
+		<a href="/users/<%= session[:user_id] %>/edit">Edit User</a>
 		<% if @channel.exists? %>
 			<a href="/channels/<%= @channel[0].id %>/edit">Edit Channel</a>
 		<% else %>
@@ -29,25 +22,21 @@
 	</p>
 </div>
 
-<h2>Showing User!</h2>
+<h2 class='white'>Showing User!</h2>
 
 <p>Username: <%= @user.username %></p>
 <p>Email: <%= @user.email %></p>
 <p><%= image_tag @user.avatar.url(:medium) %></p>
 <hr>
 
-<h2>Your Channel!</h2>
+<h2 class='white'>Your Channel!</h2>
 <% if @channel.exists? %>
 	<div class="channel">
 		<%= image_tag(@channel[0].logo.url(:thumb), :class => "image") %>
 		<div class="text">
-			<h3><a href="/channels/<%=@channel[0].id%>"><%= @channel[0].name %></a></h3>
+			<h3><a href="/channels/<%= @channel[0].id %>"><%= @channel[0].name %></a></h3>
 			<p><%= @channel[0].description %></p>
 			<p><%= @channel[0].user.username %></p>
 		</div>
 	</div>
 <% end %>
-
-
-</body>
-</html>

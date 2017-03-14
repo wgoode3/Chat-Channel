@@ -4,11 +4,11 @@ class CommentsController < ApplicationController
 	  if @comment.valid?
 	    @comment.save
 	  end
-	  render :template => 'comments/one_comment_partial.html', :layout => false
+	  render :template => 'comments/_comment', :layout => false
   end
 
   def get
     @comments = Comment.where(channel_id: params[:id])
-	  render :template => 'comments/comment_partial', :layout => false
+	  render :template => 'comments/_comments', :layout => false
   end
 end

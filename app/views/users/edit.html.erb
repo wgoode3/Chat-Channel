@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Edit User</title>
-</head>
-<body>
-
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -28,7 +21,7 @@
 		<% end %>
 	</p>
 </div>
-<h2>Editting <%= @user.username %></h2>
+<h2 class='white'>Editting <%= @user.username %></h2>
 <p> <%= image_tag @user.avatar.url(:medium) %> </p>
 <p> <%= @user.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
 <p> <%= @user.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
@@ -36,10 +29,10 @@
 <% if session[:user_id] == @user.id %>	
 	<div class="block">
 	<%= form_for :user, url: 'patch' do |f| %>
-  		Username: <%= f.text_field :username, :value => @user.username %><br>
-  		Email: <%= f.text_field :email, :email => @user.email %><br>
-  		Avatar: <%= f.file_field :avatar %><br>
-  		<%= f.submit "Update", :class => "button" %>
+			Username: <%= f.text_field :username, :value => @user.username %><br>
+			Email: <%= f.text_field :email, :email => @user.email %><br>
+			Avatar: <%= f.file_field :avatar %><br>
+			<%= f.submit "Update", :class => "button" %>
 	<% end %>
 
 	<%= form_for :user, url: 'delete' do |f| %>
@@ -47,6 +40,3 @@
 	<% end %>
 	</div>
 <% end %>
-
-</body>
-</html>

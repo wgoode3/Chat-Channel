@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Edit Channel</title>
-	<script type="text/javascript">
-		$(document).on('click', 'span', function(){
-			$(".hide").toggle();
-			$(".show").toggle();
-		})
-	</script>
-</head>
-<body>
+
+<script type="text/javascript">
+	$(document).on('click', 'span', function(){
+		$(".hide").toggle();
+		$(".show").toggle();
+	})
+</script>
 
 <div id="menubar">
 	<p>
@@ -29,19 +24,25 @@
 		<% end %>
 	</p>
 </div>
-<br><br>
-<div class="block" style="text-align: left; color: white;">
-<h2>Editting <%= @channel.name %></h2>
-<p> <%= image_tag @channel.logo.url(:thumb) %> </p>
-<p> <%= @channel.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
-<p> <%= @channel.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
-<p> Stream key (click to show): <span class="hide"><%= @channel.secret %></span> <span class="show">************</span></p>
 
-<% if session[:user_id] == @channel.user_id %>
-	<%= form_for :channel, url: 'secret' do |f| %>
-		<%= f.submit "New Key", :class => "button" %>
+<br><br>
+
+<div class="block" style="text-align: left; color: white;">
+	<h2 class='white'>Editting <%= @channel.name %></h2>
+	<p><%= image_tag @channel.logo.url(:thumb) %> </p>
+	<p><%= @channel.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
+	<p><%= @channel.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
+	<p>
+		Stream key (click to show): 
+		<span class="hide"><%= @channel.secret %></span> 
+		<span class="show">************</span>
+	</p>
+
+	<% if session[:user_id] == @channel.user_id %>
+		<%= form_for :channel, url: 'secret' do |f| %>
+			<%= f.submit "New Key", :class => "button" %>
+		<% end %>
 	<% end %>
-<% end %>
 </div>
 
 <br><br>
@@ -49,10 +50,10 @@
 <% if session[:user_id] == @channel.user_id %>	
 	<div class="block">
 	<%= form_for :channel, url: 'patch' do |f| %>
-  		Name: <%= f.text_field :name, :value => @channel.name %><br>
-  		Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :value => @channel.description %><br>
-  		Logo: <%= f.file_field :logo %><br>
-  		<%= f.submit "Update", :class => "button" %>
+			Name: <%= f.text_field :name, :value => @channel.name %><br>
+			Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :value => @channel.description %><br>
+			Logo: <%= f.file_field :logo %><br>
+			<%= f.submit "Update", :class => "button" %>
 	<% end %>
 
 	<%= form_for :channel, url: 'delete' do |f| %>
@@ -60,6 +61,3 @@
 	<% end %>
 	</div>
 <% end %>
-
-</body>
-</html>
