@@ -20,15 +20,16 @@
 <div id="stream">Loading the player ...</div>
 <div id="chat">
 	<div id="comments">
-		<h3 style="text-align: center;"><%= @channel.name %> Chat:</h3>
 		<ul id='target'>
 			<% @comments.each do |comment| %>
-				<div class ="comment">
-					<div class="image"><%= image_tag comment.user.avatar.url(:thumb) %></div> 
-					<div class="text"><li><a href="/users/<%=comment.user.id%>"><%= comment.user.username %></a> 
-					<span style="color: silver;"><%= comment.created_at.strftime("%H:%M %m/%d/%Y") %></span></li>
-					<li> <%= comment.body %> </li></div>
-				</div>
+				<li class ="comment">
+					<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
+					<div class='text'>
+						<a href="/users/<%=comment.user.id%>"><%= comment.user.username %></a> 
+						<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
+						<br><%= comment.body %>
+					</div>
+				</li>
 			<% end %>
 		</ul>
 	</div>
@@ -41,6 +42,15 @@
 		<% else %>
 			<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
 		<% end %>
+	</div>
+</div>
+
+<div class="channel">
+	<%= image_tag(@channel.logo.url(:thumb), :class => "image") %>
+	<div class="text">
+		<h3><%= @channel.name %></h3>
+		<p><%= @channel.description %></p>
+		<p><%= @channel.user.username %></p>
 	</div>
 </div>
 
@@ -86,47 +96,35 @@
 	}); 
 </script>
 
-
-<div class="channel">
-	<%= image_tag(@channel.logo.url(:thumb), :class => "image") %>
-	<div class="text">
-		<h3><%= @channel.name %></h3>
-		<p><%= @channel.description %></p>
-		<p><%= @channel.user.username %></p>
-	</div>
-</div>
-
-<script type ="text/javascript" src="http://192.168.1.250:3001/socket.io/socket.io.js"></script>
-
 <script>
+$(document).ready(function(){
+
 	var channel = <%= @channel.id.to_json.html_safe %>;
 	var socket = io.connect('http://192.168.1.250:3001');
 
+	var objDiv = document.getElementById("comments");
+	objDiv.scrollTop = objDiv.scrollHeight;
 
-	$(document).ready(function(){
-		var socket = io.connect('http://192.168.1.250:3001');
-		// socket.emit("new_user", "new_user");
+	$('#new_message').submit(function(){
+		var comment = $('#new_comment').serialize();
+		$.post(`/channels/${channel}/comment`, comment, function(data){
+			socket.emit("new_post", {channel: channel, comment: comment});
+			$('#new_comment').val('');
+			$('#target').append(data)
+			var objDiv = document.getElementById("comments");
+			objDiv.scrollTop = objDiv.scrollHeight;
+		})
+	return false;
+	})
 
-		$('#new_message').submit(function(){
-			var comment = $('#new_comment').serialize();
-			$.post(`/channels/${channel}/comment`, comment, function(data){
-				socket.emit("new_post", {channel: channel, comment: comment});
-				$('#new_comment').val('');
-				$('#target').append(data)
+	socket.on('broadcast', function (data){
+		if(data.response.channel == channel){
+			$.get(`/channels/${channel}/comment`, function(data){
+				$('#comments').html(data)
 				var objDiv = document.getElementById("comments");
 				objDiv.scrollTop = objDiv.scrollHeight;
 			})
-		return false;
-		})
-
-		socket.on('broadcast', function (data){
-			if(data.response.channel == channel){
-				$.get(`/channels/${channel}/comment`, function(data){
-					$('#comments').html(data)
-					var objDiv = document.getElementById("comments");
-					objDiv.scrollTop = objDiv.scrollHeight;
-				})
-			}
-        });	
-	});
+		}
+    });	
+});
 </script>

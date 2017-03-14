@@ -36,7 +36,8 @@ h1, h2, h3, h4, p {
 	border: 1px solid #aaa;
 }
 .image {
-	display: inline-block;
+	vertical-align: top;
+	float: left;
 }
 .text {
 	vertical-align: top;
@@ -106,6 +107,10 @@ span {
 #comments ul {
 	list-style-type: none;
 }
+#comments, ul, li {
+	margin:0;
+	padding:0;
+}
 #comments a {
 	text-decoration: none;
 	color: #fff;
@@ -150,8 +155,8 @@ span {
 	right: 5px;
 }
 .comment {
-	display: inline-block;
-	margin-bottom: 3px;
+	margin: 5px;
+	display: block;
 }
 .comment a {
 	text-decoration: none;
