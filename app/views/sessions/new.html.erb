@@ -4,37 +4,41 @@
 	<title>Register a User</title>
 </head>
 <body>
-	
+<div class="wrapper">
 	<div class="block">
 	<h2>User Registration!</h2>
 
 	<%= form_for :user, url: '/create' do |f| %>
-  		Username: <%= f.text_field :username %><br>
-  		Email: <%= f.text_field :email %><br>
-  		Password: <%= f.text_field :password %><br>
-  		Confirm Password: <%= f.text_field :password_confirmation %><br>
+  		Username: <%= f.text_field :username, :placeholder => 'Your username'%><br>
+  		Email: <%= f.text_field :email, :placeholder => 'Your email'%><br>
+  		Password: <%= f.password_field :password, :placeholder => 'Your password' %><br>
+  		Confirm Password: <%= f.password_field :password_confirmation, :placeholder => 'Confirm password'%><br>
   		Avatar: <%= f.file_field :avatar %><br>
   	<%= f.submit "Register", :class => "button" %>
 	<% end %>
+
 	</div>
 
 	<div class="block">
 	<h2>User Login!</h2>
 
 	<%= form_for :user, url: '/login' do |f| %>
-  		Email: <%= f.text_field :email %><br>
-  		Password: <%= f.text_field :password %><br>
+  		Email: <%= f.text_field :email, :placeholder => 'Your email' %><br>
+  		Password: <%= f.password_field :password, :placeholder => 'Your password' %><br>
   	<%= f.submit "Login", :class => "button" %>
 	<% end %>
 	</div>
 
+
 	<% if flash[:errors] %>
-		<div class="error">
+		<div class="block error">
 			<% flash[:errors].each do |error| %>
 				<h3><%= error %></h3>
 			<% end %>
 		</div>
 	<% end %>
+	
+</div>
 
 </body>
 </html>

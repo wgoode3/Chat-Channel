@@ -35,7 +35,9 @@
 <% if @channels %>
 	<% @channels.each do |channel| %>
 		<div class="channel">
-			<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
+			<a href="/channels/<%=channel.id%>">
+				<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
+			</a>
 			<div class="text">
 				<h3><a href="/channels/<%=channel.id%>"><%= channel.name %></a></h3>
 				<p>Channel description: <br><%= channel.description %></p>
