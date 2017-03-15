@@ -1,8 +1,28 @@
-<li class ="comment">
-	<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
-	<div class="text">
-		<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a> 
-		<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
-		<br><%= @comment.body %>
-	</div>
-</li>
+<% if session[:user_id] == @channel.user.id %>
+	<li class ="comment">
+		<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
+		<div class="text">
+			<% if @comment.user.id == @channel.user.id %>
+				<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
+			<% else %>
+				<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
+			<% end %> 
+			<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
+			<a href='' style='float:right;' class='delete' id='<%= @comment.id %>'>X</a>
+			<br><%= @comment.body %>
+		</div>
+	</li>
+<% else %>
+	<li class ="comment">
+		<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
+		<div class="text">
+			<% if @comment.user.id == @channel.user.id %>
+				<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
+			<% else %>
+				<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
+			<% end %> 
+			<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
+			<br><%= @comment.body %>
+		</div>
+	</li>
+<% end %>

@@ -15,7 +15,12 @@ io.sockets.on('connection', function(socket){
   console.log(socket.id);
 
   socket.on("new_post", function(data){
-      console.log('Someone submitted a message:', data);
-      socket.broadcast.emit("broadcast", {response: data});
+    console.log('Someone submitted a message:', data);
+    socket.broadcast.emit("broadcast", {response: data});
+  })
+
+  socket.on("delete_post", function(data){
+    console.log('Someone deleted a message', data);
+    socket.broadcast.emit("delete", {response: data});
   })
 })

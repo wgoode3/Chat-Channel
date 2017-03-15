@@ -14,7 +14,7 @@ class ChannelsController < ApplicationController
 
   def show
   	@channel = Channel.find(params[:id])
-    @comments = Comment.where(channel_id: params[:id])
+    @comments = Comment.where(channel_id: params[:id]).last(50)
   end
 
   def create

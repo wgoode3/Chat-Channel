@@ -20,22 +20,42 @@
 <div id="stream">Loading the player ...</div>
 <div id="chat">
 
-		<ul id="comments">
-			<% @comments.each do |comment| %>
-				<li class ="comment clearfix">
-					<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
-					<div class='text'>
-						<% if comment.user.id == @channel.user.id %>
-							<a href="/users/<%= comment.user.id %>" style='color: #ff60be;'><%= comment.user.username %></a>
-						<% else %>
-							<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
-						<% end %>
-						<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
-						<br><%= comment.body %>
-					</div>
-				</li>
-			<% end %>
-		</ul>
+		<% if session[:user_id] == @channel.user.id %>
+			<ul id="comments">
+				<% @comments.each do |comment| %>
+					<li class ="comment clearfix" id='<%= comment.id %>'>
+						<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
+						<div class='text'>
+							<% if comment.user.id == @channel.user.id %>
+								<a href="/users/<%= comment.user.id %>" style='color: #ff60be;'><%= comment.user.username %></a>
+							<% else %>
+								<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
+							<% end %>
+							<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
+							<a href='' style='float:right;' class='delete'>X</a>
+							<br><%= comment.body %>
+						</div>
+					</li>
+				<% end %>
+			</ul>
+		<% else %>
+			<ul id="comments">
+				<% @comments.each do |comment| %>
+					<li class ="comment clearfix" id='<%= comment.id %>'>
+						<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
+						<div class='text'>
+							<% if comment.user.id == @channel.user.id %>
+								<a href="/users/<%= comment.user.id %>" style='color: #ff60be;'><%= comment.user.username %></a>
+							<% else %>
+								<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
+							<% end %>
+							<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
+							<br><%= comment.body %>
+						</div>
+					</li>
+				<% end %>
+			</ul>
+		<% end %>
 
 	<div id="new_message">
 		<% if session[:user_id] %>	
@@ -111,7 +131,19 @@ $(document).ready(function(){
 		objDiv.scrollTop = objDiv.scrollHeight;
 	}
 	scrollChat();
-	
+
+	$('.delete').click(function(){ 
+		var del = {};
+		var comment_id = $(this).parent().parent().attr('id');
+ 		del.comment = comment_id;
+		del.user = <%= session[:user_id].to_json.html_safe %>
+		console.log('attempt to delete', comment_id)
+		$.post(`/comments/${comment_id}/delete`, del, function(data){
+			if(data.response == "deleted"){
+				socket.emit("delete_post", {channel: channel, comment_id: comment_id})
+			}
+		})
+	})
 
 	$('#new_message').submit(function(){
 		var comment = $('#new_comment').serialize();
@@ -124,13 +156,20 @@ $(document).ready(function(){
 	return false;
 	});
 
-	socket.on('broadcast', function (data){
+	socket.on('broadcast', function(data){
 		if(data.response.channel == channel){
 			$.get(`/channels/${channel}/comment`, function(data){
-				$('#comments').html(data);
+				$('#comments').append(data);
 				scrollChat();
-			});
+			})
 		}
-	});	
+	})
+
+	socket.on('delete', function(data){
+		if(data.response.channel == channel){
+			$(`#${data.response.comment_id}`).remove();
+		}
+	})
+
 });
 </script>

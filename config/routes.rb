@@ -26,5 +26,6 @@ Rails.application.routes.draw do
   # comments routes
   post 'channels/:id/comment' => 'comments#create'
   get 'channels/:id/comment' => 'comments#get'
+  post 'comments/:id/delete' => 'comments#delete'
 
 end
