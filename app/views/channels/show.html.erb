@@ -1,9 +1,9 @@
-<script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>  
+<script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
 		<% if session[:user_id] %>
-			<a href="/users/<%=session[:user_id]%>">Profile</a>
+			<a href="/users/<%= session[:user_id] %>">Profile</a>
 		<% else %>
 			<a href="/sessions/new">Profile</a>
 		<% end %>
@@ -19,20 +19,24 @@
 
 <div id="stream">Loading the player ...</div>
 <div id="chat">
-	<div id="comments">
-		<ul>
+
+		<ul id="comments">
 			<% @comments.each do |comment| %>
-				<li class ="comment">
+				<li class ="comment clearfix">
 					<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
 					<div class='text'>
-						<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
+						<% if comment.user.id == @channel.user.id %>
+							<a href="/users/<%= comment.user.id %>" style='color: #ff60be;'><%= comment.user.username %></a>
+						<% else %>
+							<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
+						<% end %>
 						<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
 						<br><%= comment.body %>
 					</div>
 				</li>
 			<% end %>
 		</ul>
-	</div>
+
 	<div id="new_message">
 		<% if session[:user_id] %>	
 			<form>
@@ -56,26 +60,26 @@
 
 <script type="text/javascript">
 
-    // make video size based on screen size
-    // also adjust chat height while we're at it
+		// make video size based on screen size
+		// also adjust chat height while we're at it
 
 	var fq = window.matchMedia( "(min-width: 2400px)" );
 	var mq = window.matchMedia( "(min-width: 1720px)" );
 	var lq = window.matchMedia( "(min-width: 1400px)" );
 	
-	if (fq.matches) {
-  		var w = 1920;
-  		$('#chat').css("height","1080px");
-  		$('#comments').css("height","1010px");
-	} else if (mq.matches) {
-  		var w = 1280;
-  		$('#chat').css("height","720px");
-  		$('#comments').css("height","650px");
-	} else if (lq.matches) {
+	if(fq.matches){
+		var w = 1920;
+		$('#chat').css("height","1080px");
+		$('#comments').css("height","1010px");
+	}else if(mq.matches){
+		var w = 1280;
+		$('#chat').css("height","720px");
+		$('#comments').css("height","650px");
+	}else if(lq.matches){
 		var w = 960;
 		$('#chat').css("height","540px");
 		$('#comments').css("height","470px");
-	} else {
+	}else{
 		var w = 640;
 		$('#chat').css("height","360px");
 		$('#comments').css("height","290px");
@@ -86,13 +90,13 @@
 	var playerInstance = jwplayer("stream");
 
 	playerInstance.setup({
-    	file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
-    	width: w,
-    	height: w*9/16,
-    	primary: "flash",
-    	autostart: true,
-    	controls: true,
-    	stretching: "exactfit",
+		file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
+		width: w,
+		height: w*9/16,
+		primary: "flash",
+		autostart: true,
+		controls: true,
+		stretching: "exactfit",
 	}); 
 </script>
 
@@ -102,29 +106,31 @@ $(document).ready(function(){
 	var channel = <%= @channel.id.to_json.html_safe %>;
 	var socket = io.connect('http://192.168.1.250:3001');
 
-	var objDiv = document.getElementById("comments");
-	objDiv.scrollTop = objDiv.scrollHeight;
+	function scrollChat(){
+		var objDiv = document.getElementById("comments");
+		objDiv.scrollTop = objDiv.scrollHeight;
+	}
+	scrollChat();
+	
 
 	$('#new_message').submit(function(){
 		var comment = $('#new_comment').serialize();
 		$.post(`/channels/${channel}/comment`, comment, function(data){
 			socket.emit("new_post", {channel: channel, comment: comment});
 			$('#new_comment').val('');
-			$('#comments').append(data)
-			var objDiv = document.getElementById("comments");
-			objDiv.scrollTop = objDiv.scrollHeight;
-		})
+			$('#comments').append(data);
+			scrollChat();
+		});
 	return false;
-	})
+	});
 
 	socket.on('broadcast', function (data){
 		if(data.response.channel == channel){
 			$.get(`/channels/${channel}/comment`, function(data){
-				$('#comments').html(data)
-				var objDiv = document.getElementById("comments");
-				objDiv.scrollTop = objDiv.scrollHeight;
-			})
+				$('#comments').html(data);
+				scrollChat();
+			});
 		}
-    });	
+	});	
 });
 </script>

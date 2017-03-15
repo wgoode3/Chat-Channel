@@ -15,6 +15,16 @@
  *= require bootstrap.min
 */
 
+/* orange button linear-gradient(#f29b5a, #ef7f2c)*/
+/* purple button linear-gradient(#8570a7, #5c487e)*/
+
+/* let's set some colors to variable so I can conveniently change them */
+:root {
+	--panel-color: rgba(155, 155, 155, 0.3);
+	--button: #FF530D;
+	--admin: #4ae38e;
+}
+
 * { 
 	font-family: arial, sans-serif;
 }
@@ -33,7 +43,7 @@ h1, h2, h3, h4, p {
 	height: 50px;
 	width: 100%;
 	display: inline-block;
-	background-color: rgba(155, 155, 155, 0.3);
+	background-color: var(--panel-color);
 	margin-bottom: 5px;
 }
 #menubar a {
@@ -50,17 +60,16 @@ h1, h2, h3, h4, p {
 	width: 100%;
 	height: 200px;
 	display: inline-block;
-	background-color: rgba(155, 155, 155, 0.3);
+	background-color: var(--panel-color);
 	margin: 5px;
 }
 .image {
-	vertical-align: top;
 	float: left;
+	margin-right: 10px;
 }
 .text {
 	vertical-align: top;
-	display: inline-block;
-	padding: 10px;
+	padding: 0px 10px 5px;
 }
 .text a {
 	text-decoration: none;
@@ -79,20 +88,9 @@ span {
 	cursor: pointer;
 }
 .block {
-	text-align: center;
-	width: 35%;
-	display: inline-block;
-	background-color: rgba(155, 155, 155, 0.3);
-	vertical-align: top;
-	padding: 20px;
-	color: #fff;
-}
-.block input {
-	padding: 2px;
-	margin: 5px;
-}
-.block form {
-	text-align: left;
+	padding: 10px;
+	margin: 10px;
+	background-color: var(--panel-color);
 }
 .error{
 	padding: 5px;
@@ -108,15 +106,15 @@ span {
 	vertical-align: top;
 }
 #chat {
-	width: 420px;
+	width: 360px;
 	height: 720px;
-	background-color: rgba(155, 155, 155, 0.3);
+	background-color: var(--panel-color);
 	display: inline-block;
 	position: relative;
 	color: #fff;
 }
 #comments {
-	width: 420px;
+	/*width: 420px;*/
 	height: 650px;
 	display: inline-block;
 	overflow: auto;
@@ -130,13 +128,8 @@ span {
 	margin:0;
 	padding:0;
 }
-#comments a {
-	text-decoration: none;
-	color: #fff;
-	font-weight: bold;	
-}
 #new_message {
-	width: 420px;
+	width: 360px;
 	height: 70px;
 	float: bottom;
 	position: absolute;
@@ -144,17 +137,15 @@ span {
 	display: inline-block;
 }
 #new_message textarea {
-	width: 330px;
+	width: 270px;
 	height: 60px;
-	border-radius: 5px;
 	margin-left: 5px;
 }
 .button {
 	height: 35px;
 	width: 100px;
-	background: linear-gradient(#f29b5a, #ef7f2c);
+	background: var(--button);
 	border-color: transparent;
-	border-radius: 5px;
 	color: #fff;
 	font-weight: bold;
 	float: right;
@@ -163,9 +154,8 @@ span {
 .post {
 	height: 35px;
 	width: 70px;
-	background: linear-gradient(#f29b5a, #ef7f2c);
+	background: var(--button);
 	border-color: transparent;
-	border-radius: 5px;
 	color: #fff;
 	font-weight: bold;
 	cursor: pointer;
@@ -174,18 +164,20 @@ span {
 	right: 5px;
 }
 .comment {
-	margin: 5px;
+	padding: 5px;
 	display: block;
-}
-.comment a {
 	text-decoration: none;
 	color: #fff;
-	font-weight: bold;	
-	cursor: pointer;
 }
 .wrapper {
 	text-align: center;
 }
 .white {
 	color: #fff;
+}
+.admin {
+	color: #4ae38e;
+}
+.clearfix {
+	overflow: auto;
 }
