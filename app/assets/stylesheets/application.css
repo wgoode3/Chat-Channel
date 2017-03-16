@@ -15,16 +15,14 @@
  *= require bootstrap.min
 */
 
-/* orange button linear-gradient(#f29b5a, #ef7f2c)*/
-/* purple button linear-gradient(#8570a7, #5c487e)*/
-
-/* let's set some colors to variable so I can conveniently change them */
+/* let's set some colors to variables so I can conveniently change them */
 :root {
 	--panel-color: rgba(155, 155, 155, 0.3);
 	--button: #FF530D;
 	--admin: #4ae38e;
+	--orange: linear-gradient(#f29b5a, #ef7f2c);
+	--purple: linear-gradient(#8570a7, #5c487e);
 }
-
 * { 
 	font-family: arial, sans-serif;
 }

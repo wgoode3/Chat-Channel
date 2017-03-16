@@ -12,10 +12,10 @@ Rails.application.routes.draw do
   post 'users/:id/patch' => 'users#update'
   post 'users/:id/delete' => 'users#delete'
 
-  #channels routes
+  # channels routes
   get 'channels/main'
-  root 'channels#main'
   get 'channels/new'
+  root 'channels#main'
   post 'channels/create' => 'channels#create'
   get 'channels/:id' => 'channels#show'
   get 'channels/:id/edit' => 'channels#edit'
@@ -27,5 +27,10 @@ Rails.application.routes.draw do
   post 'channels/:id/comment' => 'comments#create'
   get 'channels/:id/comment' => 'comments#get'
   post 'comments/:id/delete' => 'comments#delete'
+
+  # blog, faq, admin pages
+  # get 'blog' => 'extras#blog'
+  # get 'faq'  => 'extras#faq'
+  # get 'admin' => 'extras#faq'
 
 end

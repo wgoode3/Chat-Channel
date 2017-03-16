@@ -42,6 +42,7 @@ io.sockets.on('connection', function(socket){
 
   // responds with the viewer count object
   socket.on("get_count", function(data){
+    console.log(data);
     socket.emit("viewer_count", {viewers: viewers});
   });
 

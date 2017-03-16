@@ -3,6 +3,18 @@ require 'securerandom'
 class ChannelsController < ApplicationController
   def main
   	@channels = Channel.all
+    if @channels
+      # create a list of hashes with the necessary fields that I can use inside my javascript
+      @list = []
+      @channels.each do |channel|
+        object = {"id" => channel.id,
+                  "name" => channel.name,
+                  "description" => channel.description,
+                  "user" => channel.user.username,
+                  "logo" => channel.logo.url(:thumb)}
+        @list.push(object)
+      end
+    end
   	if session[:user_id]
   		@user = User.find(session[:user_id])
   	end

@@ -18,13 +18,13 @@
 		</p>
 	</div>
 
-	<h1 class='white'>Chat Channel</h1>
+	<h1>Chat Channel</h1>
 
 	<% if session[:user_id] %>
 		<h3 class='white'>Hello <%= @user.username %> </h3>
 	<% end %>
 
-	<h2 class='white'>Currently Streaming:</h2>
+	<h2>Currently Streaming:</h2>
 
 	<% if @channels %>
 		<% @channels.each do |channel| %>
@@ -40,4 +40,61 @@
 			</div>
 		<% end %>
 	<% end %>
+
+	<h2>Rendered by AJAX</h2>
+	<div id='target'>
+	</div>
 </div>
+
+<!-- Some messy AJAX, makes a request for viewer count to sockets -->
+<!-- Then renders the channels with viewer count added in -->
+<!-- TODO: Sort it by viewer count -->
+
+<script>
+$(document).ready(function(){
+
+	// some useful variables
+	var channels = <%= @channels.to_json.html_safe %>;
+	var socket = io.connect('http://192.168.1.250:3001');
+	var user = <%= session[:user_id].to_json.html_safe %>;
+	var list = <%= @list.to_json.html_safe %>;
+
+	console.log('my list', list)
+
+	socket.emit("get_count", {message: "hello"});
+
+	socket.on("viewer_count", function(data){
+		if(data.viewers){
+			var live = [];
+			var not_live = [];
+			for(var i=0; i<list.length; i++){
+				if(list[i].id in data.viewers){
+					var viewer_count = data.viewers[list[i].id]
+				}else{
+					var viewer_count = 0;
+				}
+				var chan = `<div class="channel">
+											<a href="/channels/${list[i].id}">
+												<img class="image" src="${list[i].logo}" alt="test"
+											</a>
+											<div class="text">
+												<h3><a href="/channels/${list[i].id}">${list[i].name}</a></h3>
+												<p>Channel description: <br>${list[i].description}</p>
+												<p>Channel creator: <br>${list[i].user}</p>
+												<p>Viewers: ${viewer_count}</p>
+											</div>
+										</div>`;
+				if(viewer_count > 0){
+					$('#target').append(chan);
+					live.push(chan);
+				}else{
+					not_live.push(chan);
+				}
+			}
+		}	
+		console.log("live channels", live);
+		console.log("not live channels", not_live);
+	})
+
+});
+</script>
