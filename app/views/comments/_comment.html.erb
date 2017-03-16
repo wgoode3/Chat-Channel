@@ -1,28 +1,18 @@
-<% if session[:user_id] == @channel.user.id %>
-	<li class ="comment">
-		<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
-		<div class="text">
-			<% if @comment.user.id == @channel.user.id %>
-				<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
-			<% else %>
-				<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
-			<% end %> 
-			<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
+<!-- html partial to render one comment -->
+
+<li class ="comment" id='<%= @comment.id %>'>
+	<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
+	<div class="text">
+		<% if @comment.user.id == @channel.user.id %>
+			<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
+		<% else %>
+			<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
+		<% end %> 
+		<!-- Move some of this styling into the css file -->
+		<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
+		<% if session[:user_id] == @channel.user.id %>
 			<a href='' style='float:right;' class='delete' id='<%= @comment.id %>'>X</a>
-			<br><%= @comment.body %>
-		</div>
-	</li>
-<% else %>
-	<li class ="comment">
-		<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
-		<div class="text">
-			<% if @comment.user.id == @channel.user.id %>
-				<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
-			<% else %>
-				<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
-			<% end %> 
-			<span style="color: silver;"><%= @comment.created_at.strftime("%H:%M") %></span>
-			<br><%= @comment.body %>
-		</div>
-	</li>
-<% end %>
+		<% end %>
+		<br><%= @comment.body %>
+	</div>
+</li>
