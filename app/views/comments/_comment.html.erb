@@ -4,7 +4,7 @@
 	<%= image_tag @comment.user.avatar.url(:thumb), :class => 'image'%> 
 	<div class="text">
 		<% if @comment.user.id == @channel.user.id %>
-			<a href="/users/<%= @comment.user.id %>" style='color: #ff60be;'><%= @comment.user.username %></a>
+			<a href="/users/<%= @comment.user.id %>" data-toggle="tooltip" title="Channel owner" class="owner"><%= @comment.user.username %></a>
 		<% else %>
 			<a href="/users/<%= @comment.user.id %>"><%= @comment.user.username %></a>
 		<% end %> 

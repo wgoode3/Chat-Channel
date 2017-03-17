@@ -25,9 +25,9 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">Admin</a></li>
 				<% if session[:user_id] %>
-					<li><a class="logout" href="/logout">Logout</a></li>
+					<li><a href="/logout">Logout</a></li>
 				<% else %>
-					<li><a class="logout" href="/sessions/new">Login</a></li>
+					<li><a href="/sessions/new">Login</a></li>
 				<% end %>
 			</ul>
 		</div>
@@ -61,22 +61,38 @@
 				<div class='form-group'>
 					<label for='channel'>Channel Name:</label>
 					<%= f.text_field :name, :value => @channel.name, :class => 'form-control', :id => 'channel' %>
-		    </div>
-		    <div class='form-group'>
+		    	</div>
+		    	<div class='form-group'>
 					<label for='description'>Channel Description:</label>
 					<%= f.text_area :description, :value => @channel.description, :class => 'form-control', :id => 'description' %>
-		    </div>
-		    <div class='form-group'>
+		    	</div>
+		    	<div class='form-group'>
 					<label for='logo'>Channel Logo:</label>
 					<%= f.file_field :logo, :class => "btn btn-default", :id => 'logo' %>
 				</div>
 				<%= f.submit "Update", :class => "btn btn-primary pull-left" %>
 			<% end %>
 
-			<!-- Form to delete the channel -->
-			<%= form_for :channel, url: 'delete' do |f| %>
-				<%= f.submit "Delete", :class => "btn btn-danger pull-right" %>
-			<% end %>
+			<!-- Brings up a modal to confirm delete -->
+			<button class='btn btn-danger pull-right' data-toggle="modal" data-target="#modal">Delete</button>
+
+			<!-- Modal content -->
+			<div class="modal fade" id="modal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding:20px; background-color:#222;">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal" style="color:#fff;">&times;</button>
+							<h4 class='modal-text'>Delete cannot be undone, are you sure?</h4><br>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary pull-right" data-dismiss="modal">Cancel</button>
+							<%= form_for :channel, url: 'delete' do |f| %>
+								<%= f.submit "Delete", :class => "btn btn-danger pull-left" %>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<br><br>
 

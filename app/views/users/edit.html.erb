@@ -29,9 +29,9 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">Admin</a></li>
 				<% if session[:user_id] %>
-					<li><a class="logout" href="/logout">Logout</a></li>
+					<li><a href="/logout">Logout</a></li>
 				<% else %>
-					<li><a class="logout" href="/sessions/new">Login</a></li>
+					<li><a href="/sessions/new">Login</a></li>
 				<% end %>
 			</ul>
 		</div>
@@ -57,11 +57,11 @@
 				<div class='form-group'>
 					<label for='usr'>User Name:</label>
 					<%= f.text_field :username, :value => @user.username, :class => 'form-control', :id => 'usr'%>
-		    </div>
+		    	</div>
 				<div class='form-group'>
 					<label for='email'>Email Address:</label>
 					<%= f.text_field :email, :email => @user.email, :class => 'form-control', :id => 'email'%>
-		    </div>
+		    	</div>
 				<div class='form-group'>
 					<label for='avatar'>User Avatar:</label>
 					<%= f.file_field :avatar, :class => "btn btn-default", :id => 'avatar' %>
@@ -69,11 +69,27 @@
 				<%= f.submit "Update", :class => "btn btn-primary pull-left" %>
 			<% end %>
 
-			<!-- Form to delete the user, this really needs a confirmation modal perhaps -->
-			<%= form_for :user, url: 'delete' do |f| %>
-				<%= f.submit "Delete", :class => "btn btn-danger pull-right" %>
-			<% end %>
+			<!-- Brings up a modal to confirm delete -->
+			<button class='btn btn-danger pull-right' data-toggle="modal" data-target="#modal">Delete</button>
 
+			<!-- Modal content-->
+			<div class="modal fade" id="modal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content" style="padding:20px; background-color:#222;">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal" style="color:#fff;">&times;</button>
+							<h4 class='modal-text'>Delete cannot be undone, are you sure?</h4><br>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary pull-right" data-dismiss="modal">Cancel</button>
+							<%= form_for :user, url: 'delete' do |f| %>
+								<%= f.submit "Delete", :class => "btn btn-danger pull-left" %>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<br><br>
 			
 		</div>

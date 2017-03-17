@@ -17,32 +17,30 @@
 
 /* let's set some colors to variables so I can conveniently change them */
 :root {
+
+	/* Transparent Grey */
 	--panel: rgba(155, 155, 155, 0.3);
+
+	/* International Orange */
 	--brand: #FF530D;
-	--admin: #4ae38e;
+
+	/* Monokai orchid (pinkish) */
+	--admin: #F92672;
+
+	/* Monokai bounded rationality (blueish) */
+	--owner: #66D9EF;
+
+	/* Monokai henn1nk (greenish) */
+	--mod: #A6E22E;
+
 }
+
 body {
 	background-image: url(footer_lodyas/footer_lodyas.png);
 }
+
 h1, h2, h3, h4, p {
 	color: #fff;
-}
-#menubar {
-	height: 50px;
-	width: 100%;
-	display: inline-block;
-	background-color: var(--panel);
-	margin-bottom: 5px;
-}
-#menubar a {
-	text-decoration: none;
-	color: #c3c3c3;
-	font-weight: bold;
-	margin-left: 20px;
-}
-.logout {
-	float: right;
-	margin-right: 20px;
 }
 .channel {
 	width: 100%;
@@ -62,12 +60,6 @@ h1, h2, h3, h4, p {
 .text a {
 	text-decoration: none;
 	color: #fff;
-}
-#menubar a:hover {
-	color: #FF530D;
-}
-a:hover {
-	color: #FF530D;
 }
 .hide {
 	display: none;
@@ -107,7 +99,7 @@ span {
 	padding:0;
 }
 #new_message {
-	width: 350px;
+	width: 355px;
 	height: 70px;
 	float: bottom;
 	position: absolute;
@@ -123,12 +115,29 @@ span {
 .wrapper {
 	text-align: center;
 }
-.admin {
-	color: #4ae38e;
-}
 .clearfix {
 	overflow: auto;
 }
 #new_comment {
 	width: 290px;
+}
+.tooltip > .tooltip-inner {
+	background-color: #000;
+	color: #fff;
+	padding: 5px;
+}
+.tooltip > .tooltip-inner > .tooltip-arrow {
+	border-bottom: 5px solid black;
+}
+.admin {
+	color: var(--admin) !important;
+}
+.owner {
+	color: var(--owner) !important;
+}
+.mod {
+	color: var(--mod) !important;
+}
+.modal {
+	text-align: center;
 }

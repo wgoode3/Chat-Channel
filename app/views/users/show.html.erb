@@ -29,9 +29,9 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">Admin</a></li>
 				<% if session[:user_id] %>
-					<li><a class="logout" href="/logout">Logout</a></li>
+					<li><a href="/logout">Logout</a></li>
 				<% else %>
-					<li><a class="logout" href="/sessions/new">Login</a></li>
+					<li><a href="/sessions/new">Login</a></li>
 				<% end %>
 			</ul>
 		</div>
