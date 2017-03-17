@@ -1,4 +1,5 @@
-<div class="col-sm-6">
+<!-- Form to register a new user -->
+<div class="col-md-5 col-md-offset-1 col-sm-6">
 	<%= form_for :user, url: '/create', :html => { :class => 'block' } do |f| %>
 		<h2>User Registration!</h2>
 		<div class='form-group'>
@@ -17,15 +18,19 @@
 			<label for='cpass'>Confirm Password:</label>
 			<%= f.password_field :password_confirmation, :placeholder => 'Confirm password', :class => 'form-control', :id => 'cpass'%>
     </div>
+    <!-- Might get rid of the avatar field from the registration form -->
+    <!-- It can be set and updated in the edit user form -->
     <div class='form-group'>
 			<label for='avatar'>User Avatar:</label>
 			<%= f.file_field :avatar, :class => "btn btn-default", :id => 'avatar' %>
 		</div>
+
 		<%= f.submit "Register", :class => "btn btn-primary" %>
 	<% end %>
 </div>
 
-<div class="col-sm-6">
+<!-- Form to login an existing user -->
+<div class="col-md-5 col-sm-6">
 	<%= form_for :user, url: '/login', :html => { :class => 'block' } do |f| %>
 		<h2>User Login!</h2>
 		<div class='form-group'>
@@ -40,8 +45,9 @@
 	<% end %>
 </div>
 
+<!-- Validation errors as dismissable alerts -->
 <% if flash[:errors] %>
-	<div class="col-sm-12">
+	<div class="col-md-6 col-md-offset-3">
 		<% flash[:errors].each do |error| %>
 			<div class="alert alert-danger alert-dismissable">
 				<a href='' class="close" data-dismiss='alert' aria-label='close'>x</a>

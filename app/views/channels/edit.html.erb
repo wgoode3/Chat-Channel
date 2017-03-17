@@ -1,11 +1,4 @@
-
-<script type="text/javascript">
-	$(document).on('click', 'span', function(){
-		$(".hide").toggle();
-		$(".show").toggle();
-	})
-</script>
-
+<!-- Need to replace this with a bootstrap navbar -->
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -25,39 +18,65 @@
 	</p>
 </div>
 
-<br><br>
+<!-- The current channel information -->
+<div class="col-md-6 col-md-offset-3">
+	<div class='block'>
+		<h2><%= @channel.name %></h2>
+		<p><%= image_tag @channel.logo.url(:thumb) %> </p>
+		<p><%= @channel.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
+		<p><%= @channel.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
+		<!-- Hide the stream key unless clicked -->
+		<p>Stream key (click to show): <span class="key"><%= @channel.secret %></span><span class="stars">************</span></p>
 
-<div class="block" style="text-align: left; color: white;">
-	<h2 class='white'>Editting <%= @channel.name %></h2>
-	<p><%= image_tag @channel.logo.url(:thumb) %> </p>
-	<p><%= @channel.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
-	<p><%= @channel.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
-	<p>
-		Stream key (click to show): 
-		<span class="hide"><%= @channel.secret %></span> 
-		<span class="show">************</span>
-	</p>
-
-	<% if session[:user_id] == @channel.user_id %>
+		<!-- Form to reset the stream key -->
 		<%= form_for :channel, url: 'secret' do |f| %>
-			<%= f.submit "New Key", :class => "button" %>
+			<%= f.submit "New Key", :class => "btn btn-primary" %>
 		<% end %>
+
+	</div>
+</div>
+
+<!-- Form to edit the channel -->
+<div class="col-md-6 col-md-offset-3">
+	<% if session[:user_id] == @channel.user_id %>	
+		<div class="block">
+			<h2>Editting <%= @channel.name %></h2>
+			<%= form_for :channel, url: 'patch' do |f| %>
+				<div class='form-group'>
+					<label for='channel'>Channel Name:</label>
+					<%= f.text_field :name, :value => @channel.name, :class => 'form-control', :id => 'channel' %>
+		    </div>
+		    <div class='form-group'>
+					<label for='description'>Channel Description:</label>
+					<%= f.text_area :description, :value => @channel.description, :class => 'form-control', :id => 'description' %>
+		    </div>
+		    <div class='form-group'>
+					<label for='logo'>Channel Logo:</label>
+					<%= f.file_field :logo, :class => "btn btn-default", :id => 'logo' %>
+				</div>
+				<%= f.submit "Update", :class => "btn btn-primary pull-left" %>
+			<% end %>
+
+			<!-- Form to delete the channel -->
+			<%= form_for :channel, url: 'delete' do |f| %>
+				<%= f.submit "Delete", :class => "btn btn-danger pull-right" %>
+			<% end %>
+
+			<br><br>
+
+		</div>
 	<% end %>
 </div>
 
-<br><br>
-
-<% if session[:user_id] == @channel.user_id %>	
-	<div class="block">
-	<%= form_for :channel, url: 'patch' do |f| %>
-			Name: <%= f.text_field :name, :value => @channel.name %><br>
-			Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :value => @channel.description %><br>
-			Logo: <%= f.file_field :logo %><br>
-			<%= f.submit "Update", :class => "button" %>
-	<% end %>
-
-	<%= form_for :channel, url: 'delete' do |f| %>
-		<%= f.submit "Delete", :class => "button" %>
-	<% end %>
-	</div>
-<% end %>
+<!-- Might refactor this, no idea why the previous version stopped working -->
+<script type="text/javascript">
+	$('.key').hide();
+	$(document).on('click', '.stars', function(){
+		$(".stars").hide();
+		$(".key").show();
+	})
+	$(document).on('click', '.key', function(){
+		$(".key").hide();
+		$(".stars").show();
+	})
+</script>

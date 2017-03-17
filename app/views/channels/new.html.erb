@@ -1,3 +1,4 @@
+<!-- Need to replace this with a bootstrap navbar -->
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -17,28 +18,39 @@
 	</p>
 </div>
 
-<h2 class='white'>Showing User!</h2>
+<!-- Form to make a new channel -->
+<div class="col-md-6 col-md-offset-3">
+	<div class="block">
+		<h2>Make a new Channel</h2>
 
-<p><%= image_tag @user.avatar.url(:medium) %></p>
-<p>Username: <%= @user.username %></p>
-<p>Email: <%= @user.email %></p>
-<hr>
+		<%= form_for :channel, url: 'create' do |f| %>
+			<div class='form-group'>
+				<label for='channel'>Channel Name:</label>
+				<%= f.text_field :name, :placeholder => "Channel name", :class => 'form-control', :id => 'channel' %>
+			</div>
+			<div class='form-group'>
+				<label for='description'>Channel Description:</label>
+				<%= f.text_area :description, :placeholder => "Channel description...", :class => 'form-control', :id => 'description' %>
+		  </div>
+		  <div class='form-group'>
+				<label for='logo'>Channel Logo:</label>
+				<%= f.file_field :logo, :class => "btn btn-default", :id => 'logo' %>
+			</div>
+			<%= f.submit "New Channel", :class => "btn btn-primary" %>
+		<% end %>
 
-<h2 class='white'>Channels Information!</h2>
+	</div>
 
-<div class="block">
-<%= form_for :channel, url: 'create' do |f| %>
-		Channel name: <%= f.text_field :name, :placeholder => "Channel name" %><br>
-		Description: <br><%= f.text_area :description, :cols => 50, :rows => 3, :placeholder => "Channel description..."  %><br>
-		Logo: <%= f.file_field :logo %><br>
-		<%= f.submit "New Channel", :class => "button" %>
-<% end %>
 </div>
 
+<!-- Validation errors as dismissable alerts -->
 <% if flash[:errors] %>
-	<div class="error">
+	<div class="col-md-6 col-md-offset-3">
 		<% flash[:errors].each do |error| %>
-			<h3><%= error %></h3>
+			<div class="alert alert-danger alert-dismissable">
+				<a href='' class="close" data-dismiss='alert' aria-label='close'>x</a>
+				<%= error %>
+			</div>
 		<% end %>
 	</div>
 <% end %>

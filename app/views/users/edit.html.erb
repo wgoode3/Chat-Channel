@@ -1,3 +1,4 @@
+<!-- Need to replace this with a bootstrap navbar -->
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -21,22 +22,45 @@
 		<% end %>
 	</p>
 </div>
-<h2 class='white'>Editting <%= @user.username %></h2>
-<p> <%= image_tag @user.avatar.url(:medium) %> </p>
-<p> <%= @user.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
-<p> <%= @user.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %> </p>
 
-<% if session[:user_id] == @user.id %>	
+<!-- Show the current user information -->
+<div class="col-md-6 col-md-offset-3">
 	<div class="block">
-	<%= form_for :user, url: 'patch' do |f| %>
-			Username: <%= f.text_field :username, :value => @user.username %><br>
-			Email: <%= f.text_field :email, :email => @user.email %><br>
-			Avatar: <%= f.file_field :avatar %><br>
-			<%= f.submit "Update", :class => "button" %>
-	<% end %>
+		<h2><%= @user.username %></h2>
+		<p><%= image_tag @user.avatar.url(:medium) %></p>
+		<p><%= @user.created_at.strftime("Created on: %H:%M  %b %d, %Y") %></p>
+		<p><%= @user.updated_at.strftime("Last Updated: %H:%M  %b %d, %Y") %></p>
+	</div>
+</div>
 
-	<%= form_for :user, url: 'delete' do |f| %>
-		<%= f.submit "Delete", :class => "button" %>
-	<% end %>
+<!-- Form to edit the user -->
+<% if session[:user_id] == @user.id %>	
+	<div class="col-md-6 col-md-offset-3">
+		<div class="block">
+			<h2>Editting <%= @user.username %></h2>
+			<%= form_for :user, url: 'patch' do |f| %>
+				<div class='form-group'>
+					<label for='usr'>User Name:</label>
+					<%= f.text_field :username, :value => @user.username, :class => 'form-control', :id => 'usr'%>
+		    </div>
+				<div class='form-group'>
+					<label for='email'>Email Address:</label>
+					<%= f.text_field :email, :email => @user.email, :class => 'form-control', :id => 'email'%>
+		    </div>
+				<div class='form-group'>
+					<label for='avatar'>User Avatar:</label>
+					<%= f.file_field :avatar, :class => "btn btn-default", :id => 'avatar' %>
+				</div>
+				<%= f.submit "Update", :class => "btn btn-primary pull-left" %>
+			<% end %>
+
+			<!-- Form to delete the user, this really needs a confirmation modal perhaps -->
+			<%= form_for :user, url: 'delete' do |f| %>
+				<%= f.submit "Delete", :class => "btn btn-danger pull-right" %>
+			<% end %>
+
+			<br><br>
+			
+		</div>
 	</div>
 <% end %>

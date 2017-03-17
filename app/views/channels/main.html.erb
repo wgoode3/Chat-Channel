@@ -1,4 +1,4 @@
-<div id="wrapper">
+
 
 	<div id="menubar">
 		<p>
@@ -28,23 +28,27 @@
 
 	<% if @channels %>
 		<% @channels.each do |channel| %>
-			<div class="channel">
-				<a href="/channels/<%= channel.id %>">
-					<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
-				</a>
-				<div class="text">
-					<h3><a href="/channels/<%= channel.id %>"><%= channel.name %></a></h3>
-					<p>Channel description: <br><%= channel.description %></p>
-					<p>Channel creator: <br><%= channel.user.username %></p>
+			<div class="col-sm-6 col-md-4">
+				<div class="channel">
+					<a href="/channels/<%= channel.id %>">
+						<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
+					</a>
+					<div class="text">
+						<h3><a href="/channels/<%= channel.id %>"><%= channel.name %></a></h3>
+						<p>Channel description: <br><%= channel.description %></p>
+						<p>Channel creator: <br><%= channel.user.username %></p>
+					</div>
 				</div>
 			</div>
 		<% end %>
 	<% end %>
 
+	<div class='col-sm-12'>
 	<h2>Rendered by AJAX</h2>
 	<div id='target'>
 	</div>
-</div>
+	</div>
+
 
 <!-- Some messy AJAX, makes a request for viewer count to sockets -->
 <!-- Then renders the channels with viewer count added in -->

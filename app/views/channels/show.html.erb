@@ -1,4 +1,4 @@
-<!-- I probably shouldn'y be pushing this thing... -->
+<!-- I probably shouldn't be pushing this thing... -->
 <!-- is it even necessary for the player to work?... -->
 <script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>
 
@@ -20,6 +20,8 @@
 		<% end %>
 	</p>
 </div>
+
+<div class="col-sm-12">
 
 <!-- The video player div -->
 <div id="stream">
@@ -51,18 +53,25 @@
 
 	<div id="new_message">
 		<% if session[:user_id] %>	
-			<form>
-				<textarea id='new_comment' placeholder='your comment...' name="body"></textarea>
-				<input type="submit" name="Post" value="Post" class="post">
+			<form class="form-inline">
+				<div class='form-group'>
+					<textarea id='new_comment' placeholder='Your comment...' name="body" class="form-control"></textarea>
+		    </div>
+				<input type="submit" value="Post" class="btn btn-primary">
 			</form>
 		<% else %>
-			<br><p style="font-weight: bold; text-align: center;">You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment</p>
+			<br>
+			<p style="font-weight: bold; text-align: center;">
+				You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment
+			</p>
 		<% end %>
 	</div>
 
 	<!-- Consider adding validation errors? -->
 	<!-- No that's silly, you either post a comment or not -->
 	<!-- It can tell a user they are banned or timed out maybe -->
+
+</div>
 
 </div>
 
@@ -85,8 +94,8 @@
 	// consider moving this stuff to css...
 
 	var fq = window.matchMedia( "(min-width: 2400px)" );
-	var mq = window.matchMedia( "(min-width: 1720px)" );
-	var lq = window.matchMedia( "(min-width: 1400px)" );
+	var mq = window.matchMedia( "(min-width: 1670px)" );
+	var lq = window.matchMedia( "(min-width: 1320px)" );
 	
 	if(fq.matches){
 		var w = 1920;

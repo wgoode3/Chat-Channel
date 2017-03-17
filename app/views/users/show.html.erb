@@ -1,3 +1,4 @@
+<!-- Need to replace this with a bootstrap navbar -->
 <div id="menubar">
 	<p>
 		<a href="/channels/main">Home</a>
@@ -22,21 +23,27 @@
 	</p>
 </div>
 
-<h2 class='white'>Showing User!</h2>
-
-<p>Username: <%= @user.username %></p>
-<p>Email: <%= @user.email %></p>
-<p><%= image_tag @user.avatar.url(:medium) %></p>
-<hr>
-
-<h2 class='white'>Your Channel!</h2>
-<% if @channel.exists? %>
-	<div class="channel">
-		<%= image_tag(@channel[0].logo.url(:thumb), :class => "image") %>
-		<div class="text">
-			<h3><a href="/channels/<%= @channel[0].id %>"><%= @channel[0].name %></a></h3>
-			<p><%= @channel[0].description %></p>
-			<p><%= @channel[0].user.username %></p>
-		</div>
+<!-- Showing basic information about the user -->
+<div class="col-md-6 col-md-offset-3">
+	<h2>Showing User!</h2>
+	<div class="block">
+		<p>Username: <%= @user.username %></p>
+		<p>Email: <%= @user.email %></p>
+		<p><%= image_tag @user.avatar.url(:medium) %></p>
 	</div>
-<% end %>
+</div>
+
+<!-- Show a user's channel if it exists -->
+<div class="col-md-6 col-md-offset-3">
+	<% if @channel.exists? %>
+		<h2><%= @channel[0].user.username %>'s Channel!</h2>
+		<div class="channel">
+			<%= image_tag(@channel[0].logo.url(:thumb), :class => "image") %>
+			<div class="text">
+				<h3><a href="/channels/<%= @channel[0].id %>"><%= @channel[0].name %></a></h3>
+				<p><%= @channel[0].description %></p>
+				<p><%= @channel[0].user.username %></p>
+			</div>
+		</div>
+	<% end %>
+</div>
