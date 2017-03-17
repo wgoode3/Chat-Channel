@@ -1,28 +1,52 @@
-== README
+== Chat Channel
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A twitch.tv inspired live-streaming platform written in ruby on rails. Currently uses JW Player to turn RTMP streams into video and uses socket.io and node.js for a live chat. 
 
-Things you may want to cover:
+== Ruby version
+* ruby -v 2.2.4p230
+* rails -v 4.2.1
 
-* Ruby version
+== To Run
 
-* System dependencies
+You may need to comment out the following in the gemfile
 
-* Configuration
+<tt>gem 'therubyracer', platform: :ruby</tt>
 
-* Database creation
+After making any edits to the gem file
 
-* Database initialization
+<tt>$ bundle install</tt>
 
-* How to run the test suite
+The postgresql database may need to be created
 
-* Services (job queues, cache servers, search engines, etc.)
+<tt>$ rake:db create</tt>
 
-* Deployment instructions
+<tt>$ rake:db migrate</tt>
 
-* ...
+Start the rails server with
 
+<tt>$ rails server -b 0.0.0.0</tt>
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+This should make the app available locally for testing
+
+To get live updating chat to work be sure to have node.js installed and run
+
+<tt>$ npm install</tt>
+
+You will need to edit /app/views/channels/show.html.erb (currently at line 157) and /app/views/channels/main.html.erb (line 60) to reflect the IP of the server
+
+<tt>var socket = io.connect('http://192.168.1.250:3001');</tt>
+
+Then start the node server with
+
+<tt>$ node server.js</tt>
+
+To properly test the live streaming video be sure to set up the an NGINX server for RTMP streams.
+I followed {this guide}[https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/].
+
+You will need to edit /app/views/channels/show.html.erb (currently at line 139) to reflect the IP of the RTMP server.
+
+<tt>file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,</tt>
+
+Instructions on how to set up Open Broadcast Software should be in the faq section of the site, if I remember to make such instructions.
+
+This was a fun project. Have fun streaming.
