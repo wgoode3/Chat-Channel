@@ -55,7 +55,7 @@ h1, h2, h3, h4, p {
 	height: 200px;
 	display: inline-block;
 	background-color: var(--panel-color);
-	margin: 10px;
+	margin: 5px;
 }
 .image {
 	float: left;
@@ -122,7 +122,7 @@ span {
 	padding:0;
 }
 #new_message {
-	width: 355px;
+	width: 350px;
 	height: 70px;
 	float: bottom;
 	position: absolute;
@@ -138,9 +138,6 @@ span {
 .wrapper {
 	text-align: center;
 }
-.white {
-	color: #fff;
-}
 .admin {
 	color: #4ae38e;
 }
@@ -148,5 +145,5 @@ span {
 	overflow: auto;
 }
 #new_comment {
-	width: 295px;
+	width: 290px;
 }

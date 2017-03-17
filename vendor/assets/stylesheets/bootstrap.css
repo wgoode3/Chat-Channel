@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (https://getbootstrap.com/customize/?id=7292cac8f37119a38caacccf7e7cc798)
- * Config saved to config.json and https://gist.github.com/7292cac8f37119a38caacccf7e7cc798
+ * Generated using the Bootstrap Customizer (https://getbootstrap.com/customize/?id=a32e0919bfd9d23820be83f072055678)
+ * Config saved to config.json and https://gist.github.com/a32e0919bfd9d23820be83f072055678
  */
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
@@ -1407,11 +1407,11 @@ a.bg-warning:focus {
   background-color: #f7ecb5;
 }
 .bg-danger {
-  background-color: #c86a6a;
+  background-color: #deacac;
 }
 a.bg-danger:hover,
 a.bg-danger:focus {
-  background-color: #ba4545;
+  background-color: #cf8888;
 }
 .page-header {
   padding-bottom: 9px;
@@ -2436,14 +2436,14 @@ table th[class*="col-"] {
 .table > thead > tr.danger > th,
 .table > tbody > tr.danger > th,
 .table > tfoot > tr.danger > th {
-  background-color: #c86a6a;
+  background-color: #deacac;
 }
 .table-hover > tbody > tr > td.danger:hover,
 .table-hover > tbody > tr > th.danger:hover,
 .table-hover > tbody > tr.danger:hover > td,
 .table-hover > tbody > tr:hover > .danger,
 .table-hover > tbody > tr.danger:hover > th {
-  background-color: #c15757;
+  background-color: #d79a9a;
 }
 .table-responsive {
   overflow-x: auto;
@@ -2901,7 +2901,7 @@ select[multiple].input-lg {
 .has-error .input-group-addon {
   color: #b82c28;
   border-color: #b82c28;
-  background-color: #c86a6a;
+  background-color: #deacac;
 }
 .has-error .form-control-feedback {
   color: #b82c28;
@@ -5095,12 +5095,12 @@ a.thumbnail.active {
   color: #66512c;
 }
 .alert-danger {
-  background-color: #c86a6a;
-  border-color: #c15769;
+  background-color: #deacac;
+  border-color: #d79aa4;
   color: #b82c28;
 }
 .alert-danger hr {
-  border-top-color: #ba4558;
+  border-top-color: #cf8894;
 }
 .alert-danger .alert-link {
   color: #8e221f;
@@ -5418,7 +5418,7 @@ button.list-group-item-warning.active:focus {
 }
 .list-group-item-danger {
   color: #b82c28;
-  background-color: #c86a6a;
+  background-color: #deacac;
 }
 a.list-group-item-danger,
 button.list-group-item-danger {
@@ -5433,7 +5433,7 @@ button.list-group-item-danger:hover,
 a.list-group-item-danger:focus,
 button.list-group-item-danger:focus {
   color: #b82c28;
-  background-color: #c15757;
+  background-color: #d79a9a;
 }
 a.list-group-item-danger.active,
 button.list-group-item-danger.active,
@@ -5779,22 +5779,22 @@ button.list-group-item-danger.active:focus {
   border-bottom-color: #faebcc;
 }
 .panel-danger {
-  border-color: #c15769;
+  border-color: #d79aa4;
 }
 .panel-danger > .panel-heading {
   color: #b82c28;
-  background-color: #c86a6a;
-  border-color: #c15769;
+  background-color: #deacac;
+  border-color: #d79aa4;
 }
 .panel-danger > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #c15769;
+  border-top-color: #d79aa4;
 }
 .panel-danger > .panel-heading .badge {
-  color: #c86a6a;
+  color: #deacac;
   background-color: #b82c28;
 }
 .panel-danger > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #c15769;
+  border-bottom-color: #d79aa4;
 }
 .embed-responsive {
   position: relative;

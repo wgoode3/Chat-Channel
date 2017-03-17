@@ -1,59 +1,57 @@
+<!-- Need to replace this with a bootstrap navbar -->
+<div id="menubar">
+	<p>
+		<a href="/channels/main">Home</a>
+		<% if session[:user_id] %>
+			<a href="/users/<%= session[:user_id] %>">Profile</a>
+		<% else %>
+			<a href="/sessions/new">Profile</a>
+		<% end %>
+		<a href="#">FAQ</a>
+		<a href="#">Blog</a>		
+		<% if session[:user_id] %>
+			<a class="logout" href="/logout">Logout</a>
+		<% else %>
+			<a class="logout" href="/sessions/new">Login</a>
+		<% end %>
+	</p>
+</div>
 
+<!-- Some sort of default greeting -->
+<h1>Chat Channel</h1>
+<% if session[:user_id] %>
+	<h3>Hello <%= @user.username %></h3>
+<% end %>
 
-	<div id="menubar">
-		<p>
-			<a href="/channels/main">Home</a>
-			<% if session[:user_id] %>
-				<a href="/users/<%= session[:user_id] %>">Profile</a>
-			<% else %>
-				<a href="/sessions/new">Profile</a>
-			<% end %>
-			<a href="#">FAQ</a>
-			<a href="#">Blog</a>		
-			<% if session[:user_id] %>
-				<a class="logout" href="/logout">Logout</a>
-			<% else %>
-				<a class="logout" href="/sessions/new">Login</a>
-			<% end %>
-		</p>
-	</div>
-
-	<h1>Chat Channel</h1>
-
-	<% if session[:user_id] %>
-		<h3 class='white'>Hello <%= @user.username %> </h3>
-	<% end %>
-
-	<h2>Currently Streaming:</h2>
-
-	<% if @channels %>
-		<% @channels.each do |channel| %>
-			<div class="col-sm-6 col-md-4">
-				<div class="channel">
-					<a href="/channels/<%= channel.id %>">
-						<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
-					</a>
-					<div class="text">
-						<h3><a href="/channels/<%= channel.id %>"><%= channel.name %></a></h3>
-						<p>Channel description: <br><%= channel.description %></p>
-						<p>Channel creator: <br><%= channel.user.username %></p>
-					</div>
+<!-- Showing all of the channels -->
+<h2>All Channels:</h2>
+<% if @channels %>
+	<% @channels.each do |channel| %>
+		<div class="col-sm-6 col-md-4">
+			<div class="channel">
+				<a href="/channels/<%= channel.id %>">
+					<%= image_tag(channel.logo.url(:thumb), :class => "image") %>
+				</a>
+				<div class="text">
+					<h3><a href="/channels/<%= channel.id %>"><%= channel.name %></a></h3>
+					<p>Channel description: <br><%= channel.description %></p>
+					<p>Channel creator: <br><%= channel.user.username %></p>
 				</div>
 			</div>
-		<% end %>
+		</div>
 	<% end %>
+<% end %>
 
-	<div class='col-sm-12'>
-	<h2>Rendered by AJAX</h2>
+<!-- Dynamically Render the channels with view count, works sometimes -->
+<div class='col-sm-12'>
+	<h2>Rendered by AJAX:</h2>
 	<div id='target'>
 	</div>
-	</div>
-
+</div>
 
 <!-- Some messy AJAX, makes a request for viewer count to sockets -->
 <!-- Then renders the channels with viewer count added in -->
-<!-- TODO: Sort it by viewer count -->
-
+<!-- TODO: Sort by viewer count -->
 <script>
 $(document).ready(function(){
 
@@ -77,15 +75,17 @@ $(document).ready(function(){
 				}else{
 					var viewer_count = 0;
 				}
-				var chan = `<div class="channel">
-											<a href="/channels/${list[i].id}">
-												<img class="image" src="${list[i].logo}" alt="test"
-											</a>
-											<div class="text">
-												<h3><a href="/channels/${list[i].id}">${list[i].name}</a></h3>
-												<p>Channel description: <br>${list[i].description}</p>
-												<p>Channel creator: <br>${list[i].user}</p>
-												<p>Viewers: ${viewer_count}</p>
+				var chan = `<div class="col-sm-6 col-md-4">
+											<div class="channel">
+												<a href="/channels/${list[i].id}">
+													<img class="image" src="${list[i].logo}" alt="test"
+												</a>
+												<div class="text">
+													<h3><a href="/channels/${list[i].id}">${list[i].name}</a></h3>
+													<p>Channel description: <br>${list[i].description}</p>
+													<p>Channel creator: <br>${list[i].user}</p>
+													<p>Viewers: ${viewer_count}</p>
+												</div>
 											</div>
 										</div>`;
 				if(viewer_count > 0){
