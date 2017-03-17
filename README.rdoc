@@ -3,14 +3,14 @@
 A twitch.tv inspired live-streaming platform written in ruby on rails. Currently uses JW Player to turn RTMP streams into video and uses socket.io and node.js for a live chat. 
 
 == Ruby version
-* ruby version 2.2.4p230
-* rails version 4.2.1
+* ruby -v 2.2.4p230
+* rails -v 4.2.1
 
 == To Run
 
 You may need to comment out the following in the gemfile
 
-<tt>gem 'thebubyracer', platform: :ruby</tt>
+<tt>gem 'therubyracer', platform: :ruby</tt>
 
 After making any edits to the gem file
 
