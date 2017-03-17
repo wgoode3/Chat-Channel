@@ -31,7 +31,7 @@ You will need to edit /app/views/channels/show.html.erb (currently at line 157) 
 Then start the node server with
 <tt>$ node server.js</tt>
 
-To properly test the live streaming video be sure to set up the NGINX server.
+To properly test the live streaming video be sure to set up the an NGINX server for RTMP streams.
 I followed {this guide}[https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/].
 
 You will need to edit /app/views/channels/show.html.erb (currently at line 139) to reflect the IP of the RTMP server.
