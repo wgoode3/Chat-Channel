@@ -2,24 +2,39 @@
 <!-- is it even necessary for the player to work?... -->
 <script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>
 
-<!-- Menubar div -->
-<div id="menubar">
-	<p>
-		<a href="/channels/main">Home</a>
-		<% if session[:user_id] %>
-			<a href="/users/<%= session[:user_id] %>">Profile</a>
-		<% else %>
-			<a href="/sessions/new">Profile</a>
-		<% end %>
-		<a href="#">FAQ</a>
-		<a href="#">Blog</a>		
-		<% if session[:user_id] %>
-			<a class="logout" href="/logout">Logout</a>
-		<% else %>
-			<a class="logout" href="/sessions/new">Login</a>
-		<% end %>
-	</p>
-</div>
+<!-- Collapsible navbar -->
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="">Chat Channel</a>
+		</div>
+		<div class="collapse navbar-collapse" id="nav">
+			<ul class="nav navbar-nav">
+				<li><a href="/">Main</a></li>
+				<% if session[:user_id] %>
+					<li><a href="/users/<%=session[:user_id]%>">Profile</a></li>
+				<% else %>
+					<li><a href="/sessions/new">Profile</a></li>
+				<% end %>
+				<li><a href="#">FAQ</a></li>
+				<li><a href="#">Blog</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Admin</a></li>
+				<% if session[:user_id] %>
+					<li><a class="logout" href="/logout">Logout</a></li>
+				<% else %>
+					<li><a class="logout" href="/sessions/new">Login</a></li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</nav>
 
 <div class="col-sm-12">
 

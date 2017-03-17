@@ -17,18 +17,12 @@
 
 /* let's set some colors to variables so I can conveniently change them */
 :root {
-	--panel-color: rgba(155, 155, 155, 0.3);
-	--button: #FF530D;
+	--panel: rgba(155, 155, 155, 0.3);
+	--brand: #FF530D;
 	--admin: #4ae38e;
-	--orange: linear-gradient(#f29b5a, #ef7f2c);
-	--purple: linear-gradient(#8570a7, #5c487e);
-}
-* { 
-	font-family: arial, sans-serif;
 }
 body {
 	background-image: url(footer_lodyas/footer_lodyas.png);
-	margin: 20px;
 }
 h1, h2, h3, h4, p {
 	color: #fff;
@@ -37,7 +31,7 @@ h1, h2, h3, h4, p {
 	height: 50px;
 	width: 100%;
 	display: inline-block;
-	background-color: var(--panel-color);
+	background-color: var(--panel);
 	margin-bottom: 5px;
 }
 #menubar a {
@@ -54,7 +48,7 @@ h1, h2, h3, h4, p {
 	width: 100%;
 	height: 200px;
 	display: inline-block;
-	background-color: var(--panel-color);
+	background-color: var(--panel);
 	margin: 5px;
 }
 .image {
@@ -83,17 +77,8 @@ span {
 }
 .block {
 	padding: 10px;
-	margin: 10px;
-	background-color: var(--panel-color);
-}
-.error{
-	padding: 5px;
-	margin-top: 10px;
-	text-align: center;
-	width: 35%;
-	color: white;
-	background-color: red;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
+	background-color: var(--panel);
 }
 #stream {
 	display: inline-block;

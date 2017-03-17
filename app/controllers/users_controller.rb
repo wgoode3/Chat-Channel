@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @channel = Channel.where(user_id: params[:id])
   	if session[:user_id] == params[:id].to_i
   		@user = User.find(params[:id])
   	else
