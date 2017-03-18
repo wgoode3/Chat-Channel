@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
 
+  # renders a page to show a specific user and their channel if they have one
   def show
   	@user = User.find(params[:id])
   	@channel = Channel.where(user_id: params[:id])
   end
 
+  # allows a user to create an account
   def create
   	@user = User.new(user_params)
+    # need to initialize a user with is_admin set to false
+    @user.is_admin = false
   	if @user.save
   	  session[:user_id] = @user.id
       redirect_to '/channels/main'
@@ -16,6 +20,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # renders an edit user page
   def edit
     @channel = Channel.where(user_id: params[:id])
   	if session[:user_id] == params[:id].to_i
@@ -25,6 +30,7 @@ class UsersController < ApplicationController
   	end
   end
 
+  # updates a user
   def update
   	@user = User.find(params[:id])
   	if user_params[:avatar] == nil
@@ -35,6 +41,7 @@ class UsersController < ApplicationController
   	redirect_to :back
   end
 
+  # deletes a user
   def delete
   	if session[:user_id] == params[:id].to_i
   		User.find(params[:id]).destroy
@@ -45,8 +52,10 @@ class UsersController < ApplicationController
   	end
   end
 
+  # private method for creating, updating a user
   private
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :avatar)
   end
+
 end

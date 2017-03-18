@@ -11,10 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161127130145) do
+ActiveRecord::Schema.define(version: 20170317231605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "channel_users", force: :cascade do |t|
+    t.integer  "channel_id"
+    t.integer  "user_id"
+    t.boolean  "follower"
+    t.boolean  "mod"
+    t.boolean  "ban"
+    t.datetime "ends"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "channel_users", ["channel_id"], name: "index_channel_users_on_channel_id", using: :btree
+  add_index "channel_users", ["user_id"], name: "index_channel_users_on_user_id", using: :btree
 
   create_table "channels", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -27,6 +41,7 @@ ActiveRecord::Schema.define(version: 20161127130145) do
     t.string   "logo_content_type", limit: 255
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.boolean  "is_live"
   end
 
   add_index "channels", ["user_id"], name: "index_channels_on_user_id", using: :btree
@@ -52,8 +67,11 @@ ActiveRecord::Schema.define(version: 20161127130145) do
     t.string   "avatar_content_type", limit: 255
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.boolean  "is_admin"
   end
 
+  add_foreign_key "channel_users", "channels"
+  add_foreign_key "channel_users", "users"
   add_foreign_key "comments", "channels"
   add_foreign_key "comments", "users"
 end

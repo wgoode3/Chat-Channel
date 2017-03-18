@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :channels, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :channel_users, dependent: :destroy
   validates :username, presence: true
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: EMAIL_REGEX }

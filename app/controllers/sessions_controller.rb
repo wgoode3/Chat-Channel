@@ -1,8 +1,10 @@
 class SessionsController < ApplicationController
   
+  # renders the login and registration forms
   def new
   end
   
+  # allows a user to login
   def login
     user = User.find_by_email(params[:user][:email])
     if user == nil
@@ -19,6 +21,7 @@ class SessionsController < ApplicationController
     end
   end
   
+  # allows a user to logout
   def logout
     reset_session
     redirect_to '/sessions/new'
