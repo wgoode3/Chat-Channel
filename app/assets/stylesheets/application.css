@@ -141,3 +141,7 @@ span {
 .modal {
 	text-align: center;
 }
+.logo {
+	position: relative;
+	bottom: 15px;
+}

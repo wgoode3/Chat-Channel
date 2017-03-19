@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Chatchannel</title>
+	<title>Chat Channel</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Placeholder square icon -->
+	<link rel="icon" href="assets/logos/logo-square-full.png" sizes="16x16" type="image/png">
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<!-- Loading the socket connection here might be causing the double count... -->
 	<script type ="text/javascript" src="http://192.168.1.250:3001/socket.io/socket.io.js"></script>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<%= csrf_meta_tags %>
