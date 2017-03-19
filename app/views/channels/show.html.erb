@@ -2,6 +2,11 @@
 <!-- is it even necessary for the player to work?... -->
 <script>jwplayer.key="t4gfNe6B8Hwm15IrPRD2V1AMB+LODHvxPPqA5Q==";</script>
 
+<!-- Some hidden fields so I can access data inside my scripts -->
+<%= hidden_field_tag "secret", @channel.secret, {:id => "secret"} %>
+<%= hidden_field_tag "channel", @channel.id, {:id => "channelID"} %>
+<%= hidden_field_tag "user", session[:user_id], {:id => "userID"} %>
+
 <!-- Collapsible navbar -->
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
@@ -21,8 +26,8 @@
 				<% else %>
 					<li><a href="/sessions/new">Profile</a></li>
 				<% end %>
-				<li><a href="#">FAQ</a></li>
-				<li><a href="#">Blog</a></li>
+				<li><a href="/faq">FAQ</a></li>
+				<li><a href="/blog">Blog</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#">Admin</a></li>
@@ -38,60 +43,66 @@
 
 <div class="col-sm-12">
 
-<!-- The video player div -->
-<div id="stream">
-	Loading the player ...
-</div>
-
-<!-- The chat div -->
-<div id="chat">
-	<ul id="comments">
-		<% @comments.each do |comment| %>
-			<li class ="comment clearfix" id='<%= comment.id %>'>
-				<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
-				<div class='text'>
-					<% if comment.user.id == @channel.user.id %>
-						<a href="/users/<%= comment.user.id %>" data-toggle="tooltip" title="Channel owner" class="owner"><%= comment.user.username %></a>
-					<% else %>
-						<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
-					<% end %>
-					<!-- Move some of this styling into the css file -->
-					<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
-					<% if session[:user_id] == @channel.user.id %>
-						<a href='' style='float:right;' class='delete'>X</a>
-					<% end %>
-					<br><%= comment.body %>
-				</div>
-			</li>
-		<% end %>
-	</ul>
-
-	<div id="new_message">
-		<% if session[:user_id] %>	
-			<form class="form-inline">
-				<div class='form-group'>
-					<textarea id='new_comment' placeholder='Your comment...' name="body" class="form-control"></textarea>
-		    </div>
-				<input type="submit" value="Post" class="btn btn-primary">
-			</form>
-		<% else %>
-			<br>
-			<p style="text-align: center;">
-				You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment.
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$('#new_message').css("background-color", "var(--panel)");
-					});
-				</script>
-			</p>
-		<% end %>
+	<!-- The video player div -->
+	<div id="stream">
+		Loading the player ...
 	</div>
 
-	<!-- Consider adding validation errors? -->
-	<!-- No that's silly, you either post a comment or not -->
-	<!-- It can tell a user they are banned or timed out maybe -->
+	<!-- The chat div -->
+	<div id="chat">
+		<ul id="comments">
+			<% @comments.each do |comment| %>
+				<li class ="comment" id='<%= comment.id %>'>
+					<%= image_tag comment.user.avatar.url(:thumb), :class => 'image'%>
+					<div class='text'>
+						<% if comment.user.id == @channel.user.id %>
+							<a href="/users/<%= comment.user.id %>" data-toggle="tooltip" title="Channel owner" class="owner"><%= comment.user.username %></a>
+						<% else %>
+							<a href="/users/<%= comment.user.id %>"><%= comment.user.username %></a> 
+						<% end %>
+						<!-- Move some of this styling into the css file -->
+						<span style="color: silver;"><%= comment.created_at.strftime("%H:%M") %></span>
+						<% if session[:user_id] == @channel.user.id and comment.user_id != @channel.user.id %>
+							<div class='dropdown pull-right'>
+								<a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+								<ul class="dropdown-menu" style="background-color:#222;">
+									<li><a href='' class='delete' style="color:#fff;">delete</a></li>
+								</ul>
+							</div>
+							
+						<% end %>
+						<br><%= comment.body %>
+					</div>
+				</li>
+			<% end %>
+		</ul>
 
-</div>
+		<div id="new_message">
+			<% if session[:user_id] %>	
+				<form class="form-inline">
+					<div class='form-group'>
+						<textarea id='new_comment' placeholder='Your comment...' name="body" class="form-control"></textarea>
+			    	</div>
+					<input type="submit" value="Post" class="btn btn-primary">
+				</form>
+			<% else %>
+				<br>
+				<p style="text-align: center;">
+					You must <a href="/sessions/new" style="color: #FF530D;">login</a> to leave a comment.
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$('#new_message').css("background-color", "var(--panel)");
+						});
+					</script>
+				</p>
+			<% end %>
+		</div>
+
+		<!-- Consider adding validation errors? -->
+		<!-- No that's silly, you either post a comment or not -->
+		<!-- It can tell a user they are banned or timed out maybe -->
+
+	</div>
 
 </div>
 
@@ -103,158 +114,10 @@
 			<h3><%= @channel.name %></h3>
 			<p><%= @channel.description %></p>
 			<p><%= @channel.user.username %></p>
+			<button class="btn btn-success" id='follow'>Follow</button>
 		</div>
 	</div>
 </div>
 
-<!-- Move this to an external js file! -->
-<script type="text/javascript">
-
-	// make video size based on screen size
-	// also adjust chat height while we're at it
-
-	// consider moving this stuff to css...
-
-	// the 1920x1080 setting was just too big for the grid I was using...
-	var full = window.matchMedia("(min-width: 1660px)");
-	var memium = window.matchMedia("(min-width: 1350px)");
-	var low = window.matchMedia("(min-width: 1030px)");
-
-	if(full.matches){
-		// full settings
-		var w = 1280;
-		$('#chat').css("height","720px");
-		$('#comments').css("height","650px");
-	}else if(memium.matches){
-		// medium settings
-		var w = 960;
-		$('#chat').css("height","540px");
-		$('#comments').css("height","470px");
-	}else if(low.matches){
-		// low settings
-		var w = 640;
-		$('#chat').css("height","360px");
-		$('#comments').css("height","290px");
-	}else{
-		// chat collapses below, let's make it bigger then?
-		// arguably the site is better like this than above...
-		var w = 640;
-		$('#chat').css("height","520px");
-		$('#chat').css("width","640px");
-		$('#chat').css("margin-bottom","50px");
-		$('#comments').css("height","450px");
-		$('#comments').css("width","640px");
-		$('#new_message').css("width","640px");
-		$('#new_comment').css("width","580px");
-		// form-inline collapses, so I need to move the button back...
-		$('.btn').css("position","relative");
-		$('.btn').css("top","-65px");
-		$('.btn').css("left","585px");
-	}
-
-	// the jwplayer player
-	var playerInstance = jwplayer("stream");
-
-	playerInstance.setup({
-		file: "rtmp://192.168.1.28:1935/live/flv:" + <%= @channel.secret.to_json.html_safe %>,
-		width: w,
-		height: w*9/16,
-		primary: "flash",
-		autostart: true,
-		controls: true,
-		stretching: "exactfit",
-	}); 
-
-</script>
-
-<!-- Move this to an external js file! -->
-<script>
-
-$(document).ready(function(){
-
-	// some useful variables
-	var channel = <%= @channel.id.to_json.html_safe %>;
-	var socket = io.connect('http://192.168.1.250:3001');
-	var user = <%= session[:user_id].to_json.html_safe %>;
-
-	// the scroll chat gets called a few times so it's a good candidate to be a function
-	function scrollChat(){
-		var objDiv = document.getElementById("comments");
-		objDiv.scrollTop = objDiv.scrollHeight;
-	}
-	scrollChat();
-
-	// on loading the chat viewer emits to the server
-	if(user){
-		socket.emit("new_viewer", {channel: channel, viewer: user});
-	}else{
-		socket.emit("new_viewer", {channel: channel, viewer: 'unknown'});
-	}
-
-	// on page unload tell the sockets we're leaving!!!
-	window.onbeforeunload =function(){
-		if(user){
-			socket.emit("leaving", {channel: channel, viewer: user});
-		}else{
-			socket.emit("leaving", {channel: channel, viewer: 'unknown'});
-		}
-	};
-
-	// or if they click on a link that directs them somewhere else!
-	$(document).on('click', 'a', function(){
-		if(user){
-			socket.emit("leaving", {channel: channel, viewer: user});
-		}else{
-			socket.emit("leaving", {channel: channel, viewer: 'unknown'});
-		}
-	})
-
-	// submits a message to the chat
-	$('#new_message').submit(function(){
-		var comment = $('#new_comment').serialize();
-		$.post(`/channels/${channel}/comment`, comment, function(data){
-			socket.emit("new_post", {channel: channel, comment: comment});
-			$('#new_comment').val('');
-			$('#comments').append(data);
-			scrollChat();
-		});
-	return false;
-	});
-
-	// allows channel owner to delete a comment
-	$(document).on('click', '.delete', function(){
-		var del = {};
-		var comment_id = $(this).parent().parent().attr('id');
- 		del.comment = comment_id;
-		del.user = <%= session[:user_id].to_json.html_safe %>
-		$.post(`/comments/${comment_id}/delete`, del, function(data){
-			$(`#${comment_id}`).remove();
-			if(data.response == "deleted"){
-				socket.emit("delete_post", {channel: channel, comment_id: comment_id});
-			}
-		})
-	})
-
-	// fetches a comment from another user
-	socket.on('broadcast', function(data){
-		if(data.response.channel == channel){
-			$.get(`/channels/${channel}/comment`, function(data){
-				$('#comments').append(data);
-				scrollChat();
-			})
-		}
-	})
-
-	// removes a comment deleted by channel owner
-	socket.on('delete', function(data){
-		if(data.response.channel == channel){
-			$(`#${data.response.comment_id}`).remove();
-		}
-	})
-
-	// tooltips
-	$('[data-toggle="tooltip"]').tooltip();
-
-});
-
-</script>
+<%= javascript_include_tag('video_player.js') %>
+<%= javascript_include_tag('channel_ajax.js') %>

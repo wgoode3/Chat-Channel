@@ -6,3 +6,7 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
+
+# player doesn't want to load
+Rails.application.config.assets.precompile += %w( video_player.js )
+Rails.application.config.assets.precompile += %w( channel_ajax.js )
