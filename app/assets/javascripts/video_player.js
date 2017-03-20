@@ -1,6 +1,8 @@
-console.log('video_player.js');
+document.addEventListener("turbolinks:load", function(){
 
-$(document).ready(function(){
+$(".channels.show").ready(function(){
+
+console.log('video_player.js');
 
 	function resize(){
 		// make video size based on screen size
@@ -27,19 +29,10 @@ $(document).ready(function(){
 			$('#comments').css("height","290px");
 		}else{
 			// chat collapses below, let's make it bigger then?
-			// arguably the site is better like this than above...
 			var w = 640;
 			$('#chat').css("height","520px");
-			$('#chat').css("width","640px");
 			$('#chat').css("margin-bottom","50px");
 			$('#comments').css("height","450px");
-			$('#comments').css("width","640px");
-			$('#new_message').css("width","640px");
-			$('#new_comment').css("width","580px");
-			// form-inline collapses, so I need to move the button back...
-			$('.btn').css("position","relative");
-			$('.btn').css("top","-65px");
-			$('.btn').css("left","585px");
 		}
 
 		var secret = $('#secret').val();
@@ -66,4 +59,6 @@ $(document).ready(function(){
 	
 	resize();
 
-})
+});
+
+});

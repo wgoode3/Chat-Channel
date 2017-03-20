@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href=""><img class="logo" src="/assets/logos/logo-dropshadow-full.png" alt="Chat Channel" height="50"></a>
+			<a class="navbar-brand" href=""><img class="logo" src="/assets/logos/logo-full.png" alt="Chat Channel" height="50"></a>
 		</div>
 		<div class="collapse navbar-collapse" id="nav">
 			<ul class="nav navbar-nav">
@@ -23,7 +23,7 @@
 				<li><a href="/blog">Blog</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Admin</a></li>
+				<li><a href="/admin">Admin</a></li>
 				<% if session[:user_id] %>
 					<li><a href="/logout">Logout</a></li>
 				<% else %>
@@ -35,7 +35,7 @@
 </nav>
 
 <!-- The current channel information -->
-<div class="col-md-6 col-md-offset-3">
+<div class="col-sm-8 col-sm-offset-2">
 	<div class='block'>
 		<h2><%= @channel.name %></h2>
 		<p><%= image_tag @channel.logo.url(:thumb) %> </p>
@@ -53,7 +53,7 @@
 </div>
 
 <!-- Form to edit the channel -->
-<div class="col-md-6 col-md-offset-3">
+<div class="col-sm-8 col-sm-offset-2">
 	<% if session[:user_id] == @channel.user_id %>	
 		<div class="block">
 			<h2>Editting <%= @channel.name %></h2>

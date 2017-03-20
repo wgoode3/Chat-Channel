@@ -1,6 +1,8 @@
-console.log("channel_ajax.js");
+document.addEventListener("turbolinks:load", function(){
 
-$(document).ready(function(){
+$(".channels.show").ready(function(){
+
+console.log("channel_ajax.js");
 
 	// some useful variables
 	var channel = $('#channelID').val();
@@ -101,5 +103,7 @@ $(document).ready(function(){
 
 	// tooltips
 	$('[data-toggle="tooltip"]').tooltip();
+
+});
 
 });

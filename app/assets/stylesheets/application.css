@@ -145,3 +145,9 @@ span {
 	position: relative;
 	bottom: 15px;
 }
+.navbar a {
+	font-weight: bold;
+}
+.active a {
+	color: #fff !important;
+}

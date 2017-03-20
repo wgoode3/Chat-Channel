@@ -8,5 +8,7 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 # player doesn't want to load
-Rails.application.config.assets.precompile += %w( video_player.js )
-Rails.application.config.assets.precompile += %w( channel_ajax.js )
+# Rails.application.config.assets.precompile += %w( video_player.js )
+# Rails.application.config.assets.precompile += %w( channel_ajax.js )
+
+# no longer using these as page specific javascript is being handled a better way

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Placeholder square icon -->
-	<link rel="icon" href="assets/logos/logo-square-full.png" sizes="16x16" type="image/png">
+	<link rel="icon" href="/assets/logos/logo-square.png" sizes="16x16" type="image/png">
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<!-- Loading the socket connection here might be causing the double count... -->
 	<script type ="text/javascript" src="http://192.168.1.250:3001/socket.io/socket.io.js"></script>
@@ -14,7 +14,8 @@
 </head>
 <body>
 
-<div class='container'>
+<!-- Adding controller name and action name will allow page specific javascript -->
+<div class="container <%= controller_name %> <%= action_name %>">
 	<%= yield %>
 </div>
 
