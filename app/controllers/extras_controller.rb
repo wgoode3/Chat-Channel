@@ -2,6 +2,7 @@ class ExtrasController < ApplicationController
   
   # renders some sort of blog page
   def blog
+  	@user = User.find(1)
   end
 
   # render a page with answers to common questions like "how do I stream?"

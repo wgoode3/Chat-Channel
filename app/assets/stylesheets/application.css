@@ -59,7 +59,7 @@ h1, h2, h3, h4, p {
 }
 .text a {
 	text-decoration: none;
-	color: #fff;
+	color: #FFF;
 }
 .hide {
 	display: none;
@@ -81,22 +81,18 @@ span {
 	height: 720px;
 	display: inline-block;
 	position: relative;
-	color: #fff;
+	color: #FFF;
 }
 #comments {
+	margin: 0px;
+	padding: 0px;
 	width: 355px;
 	height: 650px;
 	display: inline-block;
 	overflow: auto;
 	position: absolute;
 	top: 0;
-}
-#comments ul {
 	list-style-type: none;
-}
-#comments, ul, li {
-	margin:0;
-	padding:0;
 }
 #new_message {
 	width: 355px;
@@ -110,7 +106,7 @@ span {
 	padding: 5px;
 	display: block;
 	text-decoration: none;
-	color: #fff;
+	color: #FFF;
 }
 .wrapper {
 	text-align: center;
@@ -123,13 +119,13 @@ span {
 }
 .tooltip > .tooltip-inner {
 	background-color: #000;
-	color: #fff;
+	color: #FFF;
 	padding: 5px;
 }
 .tooltip > .tooltip-inner > .tooltip-arrow {
 	border-bottom: 5px solid black;
 }
-.admin {
+.site_admin {
 	color: var(--admin) !important;
 }
 .owner {
@@ -149,5 +145,5 @@ span {
 	font-weight: bold;
 }
 .active a {
-	color: #fff !important;
+	color: #FFF !important;
 }

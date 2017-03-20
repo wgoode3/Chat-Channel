@@ -1,2 +1,100 @@
-<h1>Extras#faq</h1>
-<p>Find me in app/views/extras/faq.html.erb</p>
+<body style="position:relative;" data-spy="scroll" data-target="#faqNav" data-offset="150">
+
+	<!-- Collapsible navbar -->
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href=""><img class="logo" src="/assets/logos/logo-full.png" alt="Chat Channel" height="50"></a>
+			</div>
+			<div class="collapse navbar-collapse" id="nav">
+				<ul class="nav navbar-nav">
+					<li><a href="/">Main</a></li>
+					<% if session[:user_id] %>
+						<li><a href="/users/<%=session[:user_id]%>">Profile</a></li>
+					<% else %>
+						<li><a href="/sessions/new">Profile</a></li>
+					<% end %>
+					<li class="active"><a href="/faq">FAQ</a></li>
+					<li><a href="/blog">Blog</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/admin">Admin</a></li>
+					<% if session[:user_id] %>
+						<li><a href="/logout">Logout</a></li>
+					<% else %>
+						<li><a href="/sessions/new">Login</a></li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="col-sm-10 col-sm-offset-1">
+			<h1>Frequently Asked Questions</h1>
+	</div>
+
+	<nav class="col-sm-2 col-sm-offset-1" id="faqNav">
+		<div class="block" style=";top:142px;position:fixed;">
+			<ul class="nav nav-pills nav-stacked">
+				<li class="active"><a href="#howTo">How to Stream</a></li>
+				<li><a href="#obsSettings">OBS Settings</a></li>
+				<li><a href="#about">About Us</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<div class="col-sm-8">
+		<div id="howTo" class="block">
+			<h2>How to Stream</h2>
+			<p>Download and install <a href="https://www.obsproject.com/">Open Broadcaster Software</a>.</p>
+			<p>Go to your Profile.</p>
+			<p>From Profile select New Channel.</p>
+			<p>Create a channel.</p>
+			<p>Go to edit channel.</p>
+			<p>Click on stream key and copy it (ctrl+c).</p>
+			<p>Open OBS and select "Settings"</p>
+			<p>In the "Broadcast Settings" tab select mode: Live Stream.</p>
+			<p>Select "Custom" from Streaming Service.</p>
+			<p>In FMS URL enter "rtmp://192.168.1.28/live".</p>
+			<p>In play path/stream key paste the key you previously copied (ctrl+v).</p>
+			<p>In the "Video" tab select the desired resolution. 1280x720 is a good choice.</p>
+			<p>In the "Encoding" tab select the Max Bitrate. For 1280x720 30FPS, 2000-2500 is a good choice.</p>
+			<p>Create a new source in "Sources" (right click and "add" source).</p>
+			<p>Game capture is usually the best source, but not always compatible. Window capture will capture a window. Monitor Capture will capture the whole monitor.</p>
+			<p>Once you are happy with these selections, click "start streaming".</p>
+		</div>
+		<div id="obsSettings" class="block">
+			<h2>OBS Settings</h2>
+			<h3>1280x720 and 30 FPS</h3>
+			<p>A good choice of bitrate is 2000-2500 Kbps.</p>
+			<h3>1280x720 and 60 FPS</h3>
+			<p>A good choice of bitrate is 3500-4500 Kbps.</p>
+			<h3>1920x1080 and 30 FPS</h3>
+			<p>A good choice of bitrate is 3000-5000 Kbps.</p>
+			<h3>1920x1080 and 60 FPS</h3>
+			<p>A good choice of bitrate is 5000-7000 Kbps.</p>
+		</div>
+		<div id="about" class="block">
+			<h2>About Us</h2>
+			<img src="/assets/logos/logo-full.png" alt="Chat Channel" width="500">
+			<p>I just wanted a comfy place to stream some VNs (virtual novels) with some friends. We frequently got banned from Twitch, as the only VN they permitted was that silly Pidgeon Dating Sim (Hatoful Boyfriend). Also the latency between the content being played live and being show on the site to viewers was beyond terrible. This really makes streamer-viewer interaction a lot harder often resulting in a streamer having to pause for a good 30 seconds waiting for the chat to react to whatever he or she asked. I'm sure there are many complicated reasons that the latency exists, but the dogged insistance that it "benefits" anyone is beyond silly. But what do I know? I had a hard enough time just getting this site to work.</p>
+			<p>Anyway I'm still learning web design. A lot of the time I consider "it works" to be good enough. As such I'm sure their is a lot to do to fix this site up. If you are curious what it looks like under the hood then go ahead and check us out on <a href="https://github.com/wgoode3/Chat-Channel">Github</a>. </p> 
+		</div>
+	</div>
+
+</body>
+
+<!-- Move this somewhere else -->
+
+<style type="text/css">
+	@media screen and (max-width: 1030px){
+		#howTo, #obsSettings, #about {
+			margin-left: 150px;
+		}
+	}
+</style>
