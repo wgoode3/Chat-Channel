@@ -4,7 +4,7 @@ class ChannelsController < ApplicationController
   
   # renders a homepage with a list of popular channels and some mechanism to find other channels
   def main
-  	@channels = Channel.all
+  	@channels = Channel.all 
     if @channels
       # create a list of hashes with the necessary fields that I can use inside my javascript
       @list = []
@@ -19,18 +19,26 @@ class ChannelsController < ApplicationController
     end
   	if session[:user_id]
   		@user = User.find(session[:user_id])
+      @channel = Channel.where(user: session[:user_id])
   	end
   end
 
   # renders a form for a user to create their own channel
   def new
-  	@user = User.find(session[:user_id])
+    if session[:user_id]
+      @user = User.find(session[:user_id])
+    else
+      redirect_to '/sessions/new'
+    end
   end
 
   # renders a page showing a user their channel
   def show
   	@channel = Channel.find(params[:id])
     @comments = Comment.where(channel_id: params[:id]).last(50)
+    if session[:user_id]
+      @check = Channel.where(user: session[:user_id])
+    end
   end
 
   # allows a user to create their own channel
@@ -49,7 +57,7 @@ class ChannelsController < ApplicationController
 
   # renders a form to edit a channel
   def edit
-  	@channel = Channel.where(user_id: session[:user_id])[0]
+  	@channel = Channel.where(user_id: session[:user_id])
   end
 
   # updates the channel's secret key used in streaming

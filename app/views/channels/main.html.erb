@@ -12,11 +12,20 @@
 		<div class="collapse navbar-collapse" id="nav">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/">Main</a></li>
-				<% if session[:user_id] %>
-					<li><a href="/users/<%=session[:user_id]%>">Profile</a></li>
-				<% else %>
-					<li><a href="/sessions/new">Profile</a></li>
-				<% end %>
+				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="">Your Profile<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<% if session[:user_id] %>
+							<li><a href="/users/<%=session[:user_id]%>">Your Profile</a></li>
+							<li><a href="/users/<%= session[:user_id] %>/edit">Edit User</a></li>
+							<% if @channel.exists? %>
+								<li><a href="/channels/<%= @channel[0].id %>/edit">Edit Channel</a></li>
+							<% else %>
+								<li><a href="/channels/new">New Channel</a></li>
+							<% end %>
+						<% else %>
+							<li><a href="/sessions/new">Profile</a></li>
+						<% end %>
+					</ul>
 				<li><a href="/faq">FAQ</a></li>
 				<li><a href="/blog">Blog</a></li>
 			</ul>

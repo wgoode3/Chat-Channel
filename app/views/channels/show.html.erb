@@ -19,12 +19,21 @@
 		</div>
 		<div class="collapse navbar-collapse" id="nav">
 			<ul class="nav navbar-nav">
-				<li><a href="/">Main</a></li>
-				<% if session[:user_id] %>
-					<li><a href="/users/<%=session[:user_id]%>">Profile</a></li>
-				<% else %>
-					<li><a href="/sessions/new">Profile</a></li>
-				<% end %>
+				<li class="active"><a href="/">Main</a></li>
+				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="">Your Profile<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<% if session[:user_id] %>
+							<li><a href="/users/<%=session[:user_id]%>">Your Profile</a></li>
+							<li><a href="/users/<%= session[:user_id] %>/edit">Edit User</a></li>
+							<% if @check.exists? %>
+								<li><a href="/channels/<%= @check[0].id %>/edit">Edit Channel</a></li>
+							<% else %>
+								<li><a href="/channels/new">New Channel</a></li>
+							<% end %>
+						<% else %>
+							<li><a href="/sessions/new">Profile</a></li>
+						<% end %>
+					</ul>
 				<li><a href="/faq">FAQ</a></li>
 				<li><a href="/blog">Blog</a></li>
 			</ul>
@@ -65,9 +74,9 @@
 							<div class='dropdown pull-right'>
 								<a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
 								<ul class="dropdown-menu" style="background-color:#222;">
-									<li><a href='' class='delete' style="color:#fff;">delete</a></li>
-									<li><a href='' class='ban' style="color:#fff;">ban user</a></li>
-									<li><a href='' class='ban' style="color:#fff;">make mod</a></li>
+									<li><a href='' class='delete' style="color:#fff !important;">delete</a></li>
+									<li><a href='' class='ban' style="color:#fff !important;">ban user</a></li>
+									<li><a href='' class='ban' style="color:#fff !important;">make mod</a></li>
 								</ul>
 							</div>
 						<% end %>

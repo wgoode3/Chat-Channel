@@ -13,33 +13,38 @@
 			</div>
 			<div class="collapse navbar-collapse" id="nav">
 				<ul class="nav navbar-nav">
-					<li><a href="/">Main</a></li>
-					<% if session[:user_id] %>
-						<li><a href="/users/<%=session[:user_id]%>">Profile</a></li>
-					<% else %>
-						<li><a href="/sessions/new">Profile</a></li>
-					<% end %>
-					<li class="active"><a href="/faq">FAQ</a></li>
-					<li><a href="/blog">Blog</a></li>
+					<li><a href="/"><span class="glyphicon glyphicon-home"></span> Main</a></li>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href=""><span class="glyphicon glyphicon-user"></span> Your Profile<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<% if session[:user_id] %>
+								<li><a href="/users/<%=session[:user_id]%>"> Your Profile</a></li>
+								<li><a href="/users/<%= session[:user_id] %>/edit">Edit User</a></li>
+								<% if @check.exists? %>
+									<li><a href="/channels/<%= @check[0].id %>/edit">Edit Channel</a></li>
+								<% else %>
+									<li><a href="/channels/new">New Channel</a></li>
+								<% end %>
+							<% else %>
+								<li><a href="/sessions/new">Profile</a></li>
+							<% end %>
+						</ul>
+					<li class="active"><a href="/faq"><span class="glyphicon glyphicon-question-sign"></span> FAQ</a></li>
+					<li><a href="/blog"><span class="glyphicon glyphicon-comment"></span> Blog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/admin">Admin</a></li>
+					<li><a href="/admin"><span class="glyphicon glyphicon-stats"></span> Admin</a></li>
 					<% if session[:user_id] %>
-						<li><a href="/logout">Logout</a></li>
+						<li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					<% else %>
-						<li><a href="/sessions/new">Login</a></li>
+						<li><a href="/sessions/new"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					<% end %>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<div class="col-sm-10 col-sm-offset-1">
-			<h1>Frequently Asked Questions</h1>
-	</div>
-
-	<nav class="col-sm-2 col-sm-offset-1" id="faqNav">
-		<div class="block" style=";top:142px;position:fixed;">
+	<nav class="col-sm-3" id="faqNav">
+		<div class="block" style=";top:33%;position:fixed;">
 			<ul class="nav nav-pills nav-stacked">
 				<li class="active"><a href="#howTo">How to Stream</a></li>
 				<li><a href="#obsSettings">OBS Settings</a></li>
@@ -47,8 +52,9 @@
 			</ul>
 		</div>
 	</nav>
-	
-	<div class="col-sm-8">
+
+	<div class="col-sm-9">
+		<h1 style="text-align: center;">Frequently Asked Questions</h1>
 		<div id="howTo" class="block">
 			<h2>How to Stream</h2>
 			<p>Download and install <a href="https://www.obsproject.com/">Open Broadcaster Software</a>.</p>
@@ -88,13 +94,3 @@
 	</div>
 
 </body>
-
-<!-- Move this somewhere else -->
-
-<style type="text/css">
-	@media screen and (max-width: 1030px){
-		#howTo, #obsSettings, #about {
-			margin-left: 150px;
-		}
-	}
-</style>
