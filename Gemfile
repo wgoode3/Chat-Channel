@@ -49,3 +49,8 @@ gem "paperclip"
 # issues preventing rake db:migrate were fixed partly by setting the version of rake here
 # also running bundle update rake
 gem 'rake', '12.0.0'
+
+# testing out web-console for admin view 
+group :development, :test do
+	gem 'web-console', '~> 2.0'
+end

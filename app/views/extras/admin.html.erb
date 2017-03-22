@@ -41,5 +41,118 @@
 		</div>
 	</nav>
 
-<h1>Extras#admin</h1>
-<p>Find me in app/views/extras/admin.html.erb</p>
+<h1 style="text-align:center;">Admin View</h1>
+
+<div class='col-sm-12 box'>
+	<h2> All Channels </h2>
+	<div id="all_channels"></div>
+	<div id="all_channels_pages" style="text-align:center;"></div>
+</div>
+
+<div class='col-sm-12 box'>
+	<h2> All Users </h2>
+	<div id="all_users"></div>
+	<div id="all_users_pages" style="text-align:center;"></div>
+</div>
+
+<div class='col-sm-12 box'>
+	<h2> All Comments </h2>
+	<div id="all_comments"></div>
+	<div id="all_comments_pages" style="text-align:center;"></div>
+</div>
+
+<!-- Web Console only accessable from 127.0.0.1 -->
+<%#= console %>
+
+<script type="text/javascript">
+	// going to write some pagination
+	$(document).ready(function(){
+		
+		var users = <%= @users.to_json.html_safe %>;
+		var channels = <%= @channels.to_json.html_safe %>;
+		var comments = <%= @comments.to_json.html_safe %>;
+
+		function paginateify(list, pgSize, divName, collumnNames, actions){
+			
+			// makes text safe and truncates
+			function safe(text){
+				if(typeof(text) != "number"){
+					var text = $($.parseHTML(text)).text();
+					if(text.length > 30){
+						text = text.substring(0, 50) + "...";
+					}
+				}
+				return text;
+			}
+
+			// start making a table with the head
+			function makeTable(start){
+				var table = `<table class="table"><tr>`;
+				for(var i=0; i<collumnNames.length; i++){
+					table += `<th>${collumnNames[i]}</th>`;
+				}
+				if(actions){
+					table += `<th>Actions</th>`;
+				}
+				table += `</tr>`;
+
+				for(var i=start*pgSize; i<(start+1)*pgSize; i++){
+					if(list[i]){
+						table += `<tr>`;
+						for(var j=0; j<collumnNames.length; j++){
+							table += `<td>${safe(list[i][collumnNames[j]])}</td>`;	
+						}
+						if(actions){
+							table += `<td>`;
+							for(var k=0; k<actions.length; k++){
+								table += `<button class="btn btn-danger btn-xs">${actions[k]}</button> `;
+							}
+							table += `</td>`;
+						}
+						table += `</tr>`;
+					}else{
+						break;
+					}
+				}
+				table += "</table>";
+				$(`#${divName}`).html(table);
+			}
+			
+			makeTable(0);
+
+			// make pages
+			function makePages(){
+				var numPages = Math.ceil(list.length / pgSize);
+				var pagination = `<ul class="pagination">`;
+				for(var i=0; i<numPages; i++){
+					pagination += `<li><a class="${divName}" id="page${i}" href="">${i+1}</a></li>`;
+				}
+				pagination += "</ul>";
+				$(`#${divName}_pages`).html(pagination)
+			}
+			
+			makePages();
+
+			// listens for someone clicking a pagination link
+			$(document).ready(function(){
+				$(`.${divName}`).click(function(e){
+					e.preventDefault();
+					makeTable(parseInt(this.id.substring(4)));
+				})
+			})
+		}
+
+		paginateify(channels, 8, "all_channels", ["id", "name", "user_id", "description", "created_at"], ["delete"])
+		paginateify(users, 8, "all_users", ["id", "username", "email", "created_at"], ["delete"])
+		paginateify(comments, 20, "all_comments", ["id", "user_id", "body", "created_at"], ["delete"])
+
+	})
+
+</script>
+
+<style type="text/css">
+	.table {
+		background-color: transparent;
+		margin-bottom: 0px;
+	}
+</style>
