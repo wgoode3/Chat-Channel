@@ -76,20 +76,47 @@
 			
 			// makes text safe and truncates
 			function safe(text){
-				if(typeof(text) != "number"){
+				if(typeof(text) == "string"){
 					var text = $($.parseHTML(text)).text();
-					if(text.length > 30){
+					if(text.length > 50){
 						text = text.substring(0, 50) + "...";
 					}
 				}
 				return text;
 			}
 
+			// turn camelCase and underscore_separated variable names into multiple words
+			// should clean up the appearance of the table header
+			function style(text){
+				var name = "";
+				var newWord = true;
+				for(var i=0; i<text.length; i++){
+					if(newWord){
+						name += text[i].toUpperCase();
+						newWord = false;
+					}else if(text[i] == "_"){
+						name += " ";
+						newWord = true;
+					}else if(text[i] == text[i].toUpperCase()){
+						if(text[i-1]){
+							if(text[i-1] == text[i-1].toLowerCase()){
+								name += " " + text[i];
+							}else{
+								name += text[i];
+							}
+						}
+					}else{
+						name += text[i];
+					}
+				}
+				return name;
+			}
+
 			// start making a table with the head
 			function makeTable(start){
 				var table = `<table class="table"><tr>`;
 				for(var i=0; i<collumnNames.length; i++){
-					table += `<th>${collumnNames[i]}</th>`;
+					table += `<th>${style(collumnNames[i])}</th>`;
 				}
 				if(actions){
 					table += `<th>Actions</th>`;
@@ -143,7 +170,7 @@
 		}
 
 		paginateify(channels, 8, "all_channels", ["id", "name", "user_id", "description", "created_at"], ["delete"])
-		paginateify(users, 8, "all_users", ["id", "username", "email", "created_at"], ["delete"])
+		paginateify(users, 8, "all_users", ["id", "username", "email", "created_at", "is_admin"], ["delete"])
 		paginateify(comments, 20, "all_comments", ["id", "user_id", "body", "created_at"], ["delete"])
 
 	})
