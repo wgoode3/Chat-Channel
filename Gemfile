@@ -51,6 +51,8 @@ gem "paperclip"
 gem 'rake', '12.0.0'
 
 # testing out web-console for admin view 
+=begin
 group :development, :test do
 	gem 'web-console', '~> 2.0'
 end
+=end

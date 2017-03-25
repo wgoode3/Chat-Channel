@@ -45,20 +45,20 @@
 
 <div class='col-sm-12 box'>
 	<h2> All Channels </h2>
-	<div id="all_channels"></div>
-	<div id="all_channels_pages" style="text-align:center;"></div>
+	<div id="channels"></div>
+	<div id="channels_pages" style="text-align:center;"></div>
 </div>
 
 <div class='col-sm-12 box'>
 	<h2> All Users </h2>
-	<div id="all_users"></div>
-	<div id="all_users_pages" style="text-align:center;"></div>
+	<div id="users"></div>
+	<div id="users_pages" style="text-align:center;"></div>
 </div>
 
 <div class='col-sm-12 box'>
 	<h2> All Comments </h2>
-	<div id="all_comments"></div>
-	<div id="all_comments_pages" style="text-align:center;"></div>
+	<div id="my_comments"></div>
+	<div id="my_comments_pages" style="text-align:center;"></div>
 </div>
 
 <!-- Web Console only accessable from 127.0.0.1 -->
@@ -72,14 +72,44 @@
 		var channels = <%= @channels.to_json.html_safe %>;
 		var comments = <%= @comments.to_json.html_safe %>;
 
-		function paginateify(list, pgSize, divName, collumnNames, actions){
+		// no need for the server to reverse order when I can do it here
+		function reverse(list){
+			for(var i=0; i<Math.floor(list.length/2); i++){
+				var temp = list[i];
+				list[i] = list[list.length-1-i];
+				list[list.length-1-i] = temp;
+			}
+		}
+
+		reverse(comments);
+
+		function paginate(list, pgSize, divName, columnNames, actions){
 			
-			// makes text safe and truncates
+			// these variables needed a larger scope
+			var numPages = Math.ceil(list.length / pgSize);
+			var current = 0;
+
+			// mostly used in the info that goes along with the pagination
+			var total = list.length;
+			
+			// default truncate length
+			var truncate_length = 50;
+
+			// number of pagination links shown on either side of "active", unless at ends
+			var pgRadius = 4;
+
+			// max number of pages includes a current one in the middle
+			var numLinks = 2 * pgRadius + 1;
+			if(numLinks > numPages){
+				numLinks = numPages;
+			}
+
+			// prevent script injections and truncates long entries
 			function safe(text){
 				if(typeof(text) == "string"){
 					var text = $($.parseHTML(text)).text();
-					if(text.length > 50){
-						text = text.substring(0, 50) + "...";
+					if(text.length > truncate_length){
+						text = text.substring(0, truncate_length) + "...";
 					}
 				}
 				return text;
@@ -112,26 +142,40 @@
 				return name;
 			}
 
-			// start making a table with the head
+			// makes a table
 			function makeTable(start){
+				// start making a table with the head
 				var table = `<table class="table"><tr>`;
-				for(var i=0; i<collumnNames.length; i++){
-					table += `<th>${style(collumnNames[i])}</th>`;
+				for(var i=0; i<columnNames.length; i++){
+					table += `<th>${style(columnNames[i])}</th>`;
 				}
 				if(actions){
 					table += `<th>Actions</th>`;
 				}
 				table += `</tr>`;
 
+				// fills out the body of the table
 				for(var i=start*pgSize; i<(start+1)*pgSize; i++){
 					if(list[i]){
 						table += `<tr>`;
-						for(var j=0; j<collumnNames.length; j++){
-							table += `<td>${safe(list[i][collumnNames[j]])}</td>`;	
+						for(var j=0; j<columnNames.length; j++){
+							table += `<td>${safe(list[i][columnNames[j]])}</td>`;	
 						}
 						if(actions){
 							table += `<td>`;
 							for(var k=0; k<actions.length; k++){
+								/*
+
+								add custom actions in here if desired
+								example usage:
+
+								if(actions[k] == "delete"){
+									table +=	`<form action="/${divName}/delete/${list[i]['id']}" method="POST"> 
+													<input class="btn btn-danger btn-xs" type="submit" value="${actions[k]}">
+												</form>`;
+								}
+
+								*/
 								table += `<button class="btn btn-danger btn-xs">${actions[k]}</button> `;
 							}
 							table += `</td>`;
@@ -145,33 +189,96 @@
 				$(`#${divName}`).html(table);
 			}
 			
-			makeTable(0);
+			makeTable(current);
 
-			// make pages
-			function makePages(){
-				var numPages = Math.ceil(list.length / pgSize);
-				var pagination = `<ul class="pagination">`;
-				for(var i=0; i<numPages; i++){
-					pagination += `<li><a class="${divName}" id="page${i}" href="">${i+1}</a></li>`;
+			// gives me a results string that looks like...
+			// (showing results 21 through 41 of 277)
+			function resultString(){
+				var start = (current*pgSize)+1;
+				var end = (current+1)*pgSize;
+				if(end > total){
+					end = total;
 				}
-				pagination += "</ul>";
-				$(`#${divName}_pages`).html(pagination)
+				return `<p class="results ${divName}">(Showing results ${start} through ${end} of ${total})</p>`;
+			}
+
+			// makes pagination links
+			function makePages(current){
+				var pagination = `<ul class="pagination">
+									<li><a class="${divName}" data-page="first" href=""><<</a></li>
+									<li><a class="${divName}" data-page="prev" href=""><</a></li>`;
+				for(var i=0; i<numLinks; i++){
+					if(i == current){
+						pagination += `<li class="active">`;
+					}else{
+						pagination += `<li>`;
+					}
+					pagination += `<a class="${divName}" data-page="${i}" href="">${i+1}</a></li>`;
+				}
+				pagination += `<li><a class="${divName}" data-page="next" href="">></a></li>
+								<li><a class="${divName}" data-page="last" href="">>></a></li></ul>`;
+				pagination += resultString();
+				$(`#${divName}_pages`).html(pagination);
+			}
+
+			// rewrite what the pagination links show
+			function redoPages(index, callback){
+				// I only need to reorder pages if we have more pages than we show
+				if(numLinks < numPages){
+					// then check if the index is near beginning, end, or in the middle
+					if(index < pgRadius + 1){
+						// make the pages starting at 0 ending at numLinks
+						var st = 0, ed = numLinks;
+					}else if(index > pgRadius && index < numPages - pgRadius){
+						// make the pages starting at index - pgRadius ending at index + pgRadius
+						var st = index - pgRadius, ed = index + pgRadius + 1;
+					}else if(index > numPages - pgRadius - 1){
+						// make the pages starting at numPages - numLinks ending at numPages
+						var st = numPages - numLinks, ed = numPages;
+					}
+					// neat that I need to track two indices at the same time
+					for(var i=st, j=2; i<ed; i++, j++){
+						// j starting at 2 skips the initial two pagination links
+						$(`#${divName}_pages a:eq(${j})`).attr(`data-page`, `${i}`); // changes data-page
+						$(`#${divName}_pages a:eq(${j})`).text(`${i+1}`); // changes text
+					}
+				}
+				callback();
 			}
 			
-			makePages();
+			if(numPages > 1){
+				makePages(current);
+			}
 
 			// listens for someone clicking a pagination link
-			$(document).ready(function(){
-				$(`.${divName}`).click(function(e){
-					e.preventDefault();
-					makeTable(parseInt(this.id.substring(4)));
-				})
-			})
+			$(`a.${divName}`).click(function(a){
+				a.preventDefault();
+				$(`a.${divName}[data-page="${current}"]`).parent().removeClass("active");
+				if(this.dataset.page == "first"){
+					current = 0;
+				}else if(this.dataset.page == "prev" && current > 0){
+					current--;
+				}else if(this.dataset.page == "next" && current < numPages-1){
+					current++;
+				}else if(this.dataset.page == "last"){
+					current = numPages-1;
+				}else{
+					if(!isNaN(this.dataset.page)){
+						current = parseInt(this.dataset.page);
+					}
+				}
+				makeTable(current);
+				redoPages(current, function(){
+					// callback waits for links to be rewritten before adding class "active"
+					$(`a.${divName}[data-page="${current}"]`).parent().addClass("active");
+				});
+				$(`.results.${divName}`).html(resultString());
+			});
 		}
 
-		paginateify(channels, 8, "all_channels", ["id", "name", "user_id", "description", "created_at"], ["delete"])
-		paginateify(users, 8, "all_users", ["id", "username", "email", "created_at", "is_admin"], ["delete"])
-		paginateify(comments, 20, "all_comments", ["id", "user_id", "body", "created_at"], ["delete"])
+		paginate(channels, 10, "channels", ["id", "name", "user_id", "description", "created_at"], ["delete"]);
+		paginate(users, 10, "users", ["id", "username", "email", "created_at", "is_admin"], ["delete"]);
+		paginate(comments, 10, "my_comments", ["id", "user_id", "body", "created_at"], ["delete"]);
 
 	})
 
