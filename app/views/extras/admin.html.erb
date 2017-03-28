@@ -72,6 +72,34 @@
 		var channels = <%= @channels.to_json.html_safe %>;
 		var comments = <%= @comments.to_json.html_safe %>;
 
+		// this functions a bit like a SQL join
+		function join(list1, list2, id, name, field){
+			for(var i=0; i<list1.length; i++){
+				for(var j=0; j<list2.length; j++){
+					if(list1[i][id] == list2[j].id){
+						list1[i][name] = list2[j][field];
+					}
+				}
+			}
+		}
+
+		// join user info onto channel
+		join(channels, users, 'user_id', 'user', 'username');
+		// join user and channel info onto comments
+		join(comments, users, 'user_id', 'user', 'username');
+		join(comments, channels, 'channel_id', 'channel', 'name');
+
+		/*
+		function keys(list){
+			for(var key in list[0]){
+				console.log(key);
+			}
+		}
+		keys(users)
+		keys(channels)
+		keys(comments)
+		*/
+
 		// no need for the server to reverse order when I can do it here
 		function reverse(list){
 			for(var i=0; i<Math.floor(list.length/2); i++){
@@ -81,6 +109,7 @@
 			}
 		}
 
+		// show most recent comments first
 		reverse(comments);
 
 		function paginate(list, pgSize, divName, columnNames, actions){
@@ -276,9 +305,9 @@
 			});
 		}
 
-		paginate(channels, 10, "channels", ["id", "name", "user_id", "description", "created_at"], ["delete"]);
-		paginate(users, 10, "users", ["id", "username", "email", "created_at", "is_admin"], ["delete"]);
-		paginate(comments, 10, "my_comments", ["id", "user_id", "body", "created_at"], ["delete"]);
+		paginate(channels, 10, "channels", ["id", "name", "user", "description", "created_at"], ["delete"]);
+		paginate(users, 10, "users", ["id", "username", "email", "is_admin", "created_at"], ["delete"]);
+		paginate(comments, 10, "my_comments", ["id", "user", "channel", "body", "created_at"], ["delete"]);
 
 	})
 

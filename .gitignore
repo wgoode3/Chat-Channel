@@ -17,3 +17,7 @@
 
 # no need to push the node modules
 node_modules/
+
+# let's ignore the user avatars and channel logos
+avatars/
+logos/
